@@ -1,524 +1,691 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Car Care Centre – Book a Job</title>
-<meta name="format-detection" content="telephone=yes">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JH Car Repair Centre Ltd</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #111; color: #f0f0f0; font-family: Arial, sans-serif; min-height: 100vh; }
-
-  header { background: #0a0a0a; border-bottom: 4px solid #f5c400; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-  .logo-name { font-size: 1.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #fff; }
-  .logo-name span { color: #f5c400; }
-  .logo-sub { font-size: 0.7rem; color: #666; letter-spacing: 3px; margin-top: 2px; }
-  a.call-btn { background: #f5c400; color: #fff; text-decoration: none; font-size: 1rem; font-weight: 700; padding: 12px 20px; border-radius: 4px; letter-spacing: 1px; display: inline-block; }
-
-  .hero { background: linear-gradient(135deg, #0a0a00, #111); text-align: center; padding: 50px 24px 40px; border-bottom: 1px solid #222; }
-  .hero h1 { font-size: 2.8rem; font-weight: 900; text-transform: uppercase; line-height: 1.1; }
-  .hero h1 span { color: #f5c400; }
-  .hero p { color: #888; margin-top: 12px; }
-  .tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 20px; }
-  .tag { border: 1px solid #333; color: #888; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 6px 14px; border-radius: 2px; }
-
-  main { max-width: 960px; margin: 0 auto; padding: 40px 20px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
-  @media(max-width: 640px) { main { grid-template-columns: 1fr; } .hero h1 { font-size: 2rem; } }
-
-  .card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 6px; padding: 28px; position: relative; }
-  .card-red::before, .card-gold::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 6px 6px 0 0; }
-  .card-red::before { background: #f5c400; }
-  .card-gold::before { background: #f0c040; }
-  .card h2 { font-size: 1.1rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; color: #fff; }
-  .card h3 { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; color: #f0c040; }
-
-  .field { margin-bottom: 16px; }
-  .field label { display: block; font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #666; margin-bottom: 6px; }
-  input[type=text], input[type=tel], input[type=password], select, textarea {
-    width: 100%; background: #0d0d0d; border: 1px solid #2a2a2a; border-radius: 4px;
-    color: #f0f0f0; font-family: Arial, sans-serif; font-size: 0.95rem; padding: 11px 14px; outline: none; transition: border-color 0.2s;
-  }
-  input:focus, select:focus, textarea:focus { border-color: #f5c400; }
-  textarea { resize: vertical; min-height: 80px; }
-  optgroup { color: #f5c400; font-weight: 700; font-style: normal; background: #0d0d0d; }
-  option { color: #f0f0f0; background: #0d0d0d; }
-
-  .submit-btn { width: 100%; background: #f5c400; border: none; color: #fff; font-size: 1rem; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; padding: 16px; cursor: pointer; border-radius: 4px; margin-top: 6px; transition: background 0.2s; }
-  .submit-btn:hover { background: #d4a800; }
-  .success-box { display: none; background: rgba(0,180,80,0.1); border: 1px solid rgba(0,180,80,0.4); border-radius: 4px; padding: 14px; text-align: center; color: #4caf50; font-size: 0.9rem; font-weight: 600; margin-top: 14px; }
-
-  .svc-group { margin-bottom: 14px; }
-  .svc-group-title { font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #f5c400; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid #2a2a2a; }
-  .svc { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 0.85rem; font-weight: 500; color: #ccc; }
-  .svc-dot { width: 6px; height: 6px; background: #f5c400; border-radius: 50%; flex-shrink: 0; }
-
-  .right-col { display: flex; flex-direction: column; gap: 20px; }
-
-  /* QR CARD */
-  .qr-card { text-align: center; }
-  .qr-card p { font-size: 0.7rem; color: #555; letter-spacing: 1px; margin-bottom: 16px; }
-  .qr-wrap { background: #fff; padding: 14px; border-radius: 4px; display: block; width: fit-content; margin: 0 auto 16px; }
-  .qr-wrap canvas, .qr-wrap img { display: block; }
-  .qr-note { font-size: 0.68rem; color: #4caf50; letter-spacing: 1px; margin-bottom: 14px; }
-  .qr-dl { background: transparent; border: 1px solid #333; color: #666; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; padding: 9px 20px; cursor: pointer; font-family: Arial, sans-serif; transition: all 0.2s; border-radius: 3px; }
-  .qr-dl:hover { border-color: #f5c400; color: #f5c400; }
-
-  /* CONTACT BAR — clickable */
-  a.contact-bar { background: #f5c400; border-radius: 6px; padding: 20px 24px; display: flex; align-items: center; gap: 14px; text-decoration: none; transition: background 0.2s; }
-  a.contact-bar:hover { background: #d4a800; }
-  .contact-bar .icon { font-size: 1.8rem; }
-  .contact-bar .lbl { font-size: 0.65rem; color: rgba(255,255,255,0.7); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
-  .contact-bar .number { font-size: 1.4rem; font-weight: 900; color: #fff; letter-spacing: 1px; }
-
-  /* CUSTOM CALENDAR */
-  .cal-wrap { background: #0d0d0d; border: 1px solid #2a2a2a; border-radius: 4px; overflow: hidden; }
-  .cal-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: #161616; border-bottom: 1px solid #2a2a2a; }
-  .cal-header span { font-weight: 700; font-size: 0.95rem; }
-  .cal-nav { background: transparent; border: 1px solid #333; color: #aaa; width: 30px; height: 30px; cursor: pointer; border-radius: 3px; font-size: 1rem; transition: all 0.2s; }
-  .cal-nav:hover { border-color: #f5c400; color: #f5c400; }
-  .cal-days-header { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; padding: 8px 6px 4px; }
-  .cal-days-header span { font-size: 0.65rem; font-weight: 700; color: #555; letter-spacing: 1px; text-transform: uppercase; }
-  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; padding: 4px 6px 10px; }
-  .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; border-radius: 4px; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; font-weight: 600; }
-  .cal-day:hover:not(.cal-blocked):not(.cal-past):not(.cal-empty):not(.cal-dayoff) { background: #2a2a2a; border-color: #f5c400; color: #f5c400; }
-  .cal-day.cal-selected { background: #f5c400 !important; color: #fff !important; border-color: #f5c400 !important; }
-  .cal-day.cal-today { border-color: #555; color: #fff; }
-  .cal-day.cal-past { color: #333; cursor: not-allowed; }
-  .cal-day.cal-empty { cursor: default; }
-  .cal-day.cal-blocked { background: #0a0a00 !important; color: #2a2a00 !important; cursor: not-allowed !important; border-color: #1a1a00 !important; text-decoration: line-through; position: relative; }
-  .cal-day.cal-blocked::after { content: '✕'; position: absolute; font-size: 0.5rem; top: 2px; right: 3px; color: #f5c400; opacity: 0.5; }
-  .cal-day.cal-dayoff { color: #2a2a2a !important; cursor: not-allowed !important; background: #111 !important; }
-  .cal-selected-display { padding: 10px 14px; font-size: 0.82rem; color: #888; border-top: 1px solid #2a2a2a; min-height: 38px; }
-  .cal-selected-display span { color: #4caf50; font-weight: 700; }
-
-  /* OWNER PANEL */
-  .owner-section { max-width: 960px; margin: 0 auto 60px; padding: 0 20px; }
-  .owner-toggle { background: transparent; border: 1px solid #f5c400; color: #f5c400; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; padding: 8px 16px; cursor: pointer; font-family: Arial, sans-serif; border-radius: 4px; transition: all 0.2s; margin-bottom: 16px; }
-  .owner-toggle:hover { border-color: #f5c400; color: #f5c400; }
-
-  /* Password gate */
-  .pw-gate { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 6px; padding: 28px; text-align: center; }
-  .pw-gate h3 { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #2196f3; margin-bottom: 16px; }
-  .pw-gate input { max-width: 240px; margin: 0 auto 12px; display: block; }
-  .pw-btn { background: #2196f3; border: none; color: #fff; font-size: 0.85rem; font-weight: 700; padding: 10px 28px; cursor: pointer; border-radius: 4px; font-family: Arial, sans-serif; transition: background 0.2s; }
-  .pw-btn:hover { background: #1565c0; }
-  .pw-error { color: #f5c400; font-size: 0.8rem; margin-top: 8px; display: none; }
-
-  .owner-card { display: none; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 6px; padding: 28px; position: relative; }
-  .owner-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #2196f3; border-radius: 6px 6px 0 0; }
-  .owner-card h2 { font-size: 1rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #2196f3; margin-bottom: 6px; }
-  .owner-card > p { font-size: 0.75rem; color: #555; margin-bottom: 20px; }
-  .owner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  @media(max-width: 500px) { .owner-grid { grid-template-columns: 1fr; } }
-  .control-box { background: #111; border: 1px solid #2a2a2a; border-radius: 4px; padding: 18px; }
-  .control-box h4 { font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; }
-  .open-label { color: #4caf50; }
-  .block-label { color: #f5c400; }
-  .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #222; font-size: 0.85rem; font-weight: 600; }
-  .toggle-row:last-child { border-bottom: none; }
-  .toggle-switch { position: relative; width: 46px; height: 24px; flex-shrink: 0; }
-  .toggle-switch input { opacity: 0; width: 0; height: 0; }
-  .slider { position: absolute; cursor: pointer; inset: 0; background: #f5c400; border-radius: 24px; transition: 0.3s; }
-  .slider:before { content: ''; position: absolute; height: 18px; width: 18px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; }
-  input:checked + .slider { background: #4caf50; }
-  input:checked + .slider:before { transform: translateX(22px); }
-  .add-block-row { display: flex; gap: 8px; margin-top: 14px; }
-  .add-block-row input[type=date] { flex: 1; background: #0d0d0d; border: 1px solid #2a2a2a; border-radius: 4px; color: #f0f0f0; font-family: Arial, sans-serif; font-size: 0.9rem; padding: 10px 12px; outline: none; }
-  .add-block-btn { background: #f5c400; border: none; color: #fff; font-size: 0.8rem; font-weight: 700; padding: 10px 14px; cursor: pointer; border-radius: 4px; white-space: nowrap; font-family: Arial, sans-serif; }
-  .blocked-list { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; max-height: 200px; overflow-y: auto; }
-  .blocked-date-item { display: flex; align-items: center; justify-content: space-between; background: #0a0a00; border: 1px solid #2a2a00; border-radius: 3px; padding: 8px 12px; font-size: 0.82rem; color: #f5c400; }
-  .remove-date { background: transparent; border: 1px solid #f5c400; color: #f5c400; font-size: 0.7rem; cursor: pointer; padding: 2px 8px; border-radius: 2px; font-family: Arial, sans-serif; }
-  .remove-date:hover { background: #f5c400; color: #fff; }
-  .lock-btn { background: transparent; border: 1px solid #555; color: #555; font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase; padding: 6px 14px; cursor: pointer; border-radius: 3px; font-family: Arial, sans-serif; margin-top: 16px; transition: all 0.2s; }
-  .lock-btn:hover { border-color: #f5c400; color: #f5c400; }
-
-  .status-banner { text-align: center; padding: 10px 20px; font-size: 0.78rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
-  .status-open { background: rgba(76,175,80,0.12); color: #4caf50; border-bottom: 1px solid rgba(76,175,80,0.2); }
-  .status-closed { background: rgba(232,23,44,0.12); color: #f5c400; border-bottom: 1px solid rgba(232,23,44,0.2); }
-  footer { text-align: center; padding: 20px; border-top: 1px solid #222; font-size: 0.65rem; color: #444; letter-spacing: 2px; text-transform: uppercase; }
+:root{--red:#c0392b;--dark:#0d0f14;--card:#131720;--border:#1e2535;--green:#22c55e;--blue:#3b82f6;--amber:#f59e0b;--text:#e8e8e8;--muted:#5a6080;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Barlow',sans-serif;background:var(--dark);color:var(--text);min-height:100vh}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#252d45;border-radius:2px}
+.page{display:none}.page.active{display:block}
+.btn{cursor:pointer;border:none;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.08em;text-transform:uppercase;transition:all .15s;border-radius:7px;font-size:14px}
+.btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.btn-red{background:linear-gradient(135deg,#c0392b,#e05252);color:#fff;padding:14px 32px}
+.btn-dark{background:#131720;color:#a0a8c0;padding:12px 24px;border:1px solid #1e2535}
+.btn-sm{padding:8px 16px;font-size:12px}
+.card{background:#131720;border:1px solid #1e2535;border-radius:10px;padding:18px}
+.inp{background:#0a0c12;border:1px solid #1e2535;border-radius:7px;color:#e8e8e8;padding:12px 15px;font-size:14px;outline:none;width:100%;font-family:'Barlow',sans-serif;transition:border .15s}
+.inp:focus{border-color:#c0392b}
+.inp::placeholder{color:#2a3050}
+label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#5a6080;margin-bottom:6px}
+.tag{display:inline-flex;align-items:center;padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif}
+.panel-btn{cursor:pointer;background:none;border:1.5px solid #1e2535;border-radius:7px;color:#5a6080;padding:9px 12px;font-size:12px;font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.08em;transition:all .15s;text-align:left;width:100%}
+.panel-btn.sel{border-color:#c0392b;color:#c0392b;background:rgba(192,57,43,.08)}
+.step-dot-done{background:#22c55e;color:#fff}
+.step-dot-active{background:#c0392b;color:#fff}
+.step-dot-pending{background:#1e2535;color:#5a6080}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(192,57,43,.3)}50%{box-shadow:0 0 50px rgba(192,57,43,.6)}}
+.fade{animation:fadeUp .3s ease forwards}
+.notif{position:fixed;top:20px;right:20px;z-index:9999;padding:12px 20px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;display:none;color:#fff}
+.notif.ok{background:#22c55e}.notif.err{background:#ef4444}
+.logo-box{width:38px;height:38px;background:linear-gradient(135deg,#c0392b,#e05252);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 </style>
 </head>
 <body>
 
-<div class="status-banner status-open" id="status-banner">✅ Bookings Open</div>
+<div id="notif" class="notif"></div>
 
-<header>
-  <div>
-    <div class="logo-name"><span>CAR CARE</span> CENTRE</div>
-    <div class="logo-sub">Birmingham Birmingham &nbsp;·&nbsp; Quality Repairsnbsp;·Birmingham &nbsp;·&nbsp; Quality Repairsnbsp; Auto Repairs & Servicing</div>
-  </div>
-  <a class="call-btn" href="tel:+447855222963">📞 Call Us Now</a>
-</header>
+<!-- ══════════════════════ LANDING -->
+<div id="p-home" class="page active">
+  <div style="background:linear-gradient(160deg,#0d0f14 55%,#180808);min-height:100vh;display:flex;flex-direction:column">
+    <div style="padding:16px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1e2535">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="logo-box">
+          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+            <path d="M4 22 Q8 8 16 6 Q24 8 28 22" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <rect x="3" y="20" width="26" height="7" rx="3" fill="rgba(255,255,255,0.15)" stroke="#fff" stroke-width="1.5"/>
+            <circle cx="9" cy="24" r="2.5" fill="#fff"/>
+            <circle cx="23" cy="24" r="2.5" fill="#fff"/>
+          </svg>
+        </div>
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;line-height:1">JH CAR REPAIR</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.5);letter-spacing:.2em;font-weight:600">CENTRE LTD</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-dark btn-sm" onclick="go('p-tracker')">🔍 Track Job</button>
+        <button class="btn btn-dark btn-sm" onclick="go('p-login')">🔐 Manager</button>
+      </div>
+    </div>
 
-<div class="hero">
-  <h1>Book Your <span>Service</span><br>Online</h1>
-  <p>Fast, reliable auto repairs & servicing in Birmingham</p>
-  <div class="tags">
-    <div class="tag">Diagnostics</div>
-    <div class="tag">Brakes</div>
-    <div class="tag">Suspension</div>
-    <div class="tag">Transmission</div>
-    <div class="tag">Exhaust</div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px;text-align:center">
+      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.3);border-radius:20px;padding:5px 16px;margin-bottom:24px">
+        <div style="width:7px;height:7px;border-radius:50%;background:#c0392b;animation:pulse 2s infinite"></div>
+        <span style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;color:#c0392b">PROFESSIONAL CAR BODYWORK REPAIRS</span>
+      </div>
+      <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(42px,9vw,80px);font-weight:900;line-height:1;margin-bottom:16px;letter-spacing:-.01em">
+        QUALITY REPAIRS<br><span style="color:#c0392b">YOU CAN TRUST</span>
+      </h1>
+      <p style="font-size:16px;color:#5a6080;max-width:480px;margin:0 auto 36px;line-height:1.65;font-weight:300">
+        Book your repair online, upload photos of the damage, get a quote and track your car's progress — all from your phone.
+      </p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-red" onclick="go('p-booking')" style="font-size:15px;animation:glow 3s infinite">📸 Book My Repair</button>
+        <button class="btn btn-dark" onclick="go('p-tracker')" style="font-size:15px">🔍 Track My Job</button>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid #1e2535;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:#1e2535">
+      <div style="background:#0d0f14;padding:22px 20px;text-align:center">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;color:#5a6080;margin-bottom:5px">PHONE / MOBILE</div>
+        <div style="font-size:16px;font-weight:600;color:#c0392b">07312 016000</div>
+      </div>
+      <div style="background:#0d0f14;padding:22px 20px;text-align:center">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;color:#5a6080;margin-bottom:5px">ADDRESS</div>
+        <div style="font-size:13px;line-height:1.5">Unit 11A Howard Street<br>West Bromwich, B70 0ST</div>
+      </div>
+      <div style="background:#0d0f14;padding:22px 20px;text-align:center">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;color:#5a6080;margin-bottom:5px">EMAIL</div>
+        <div style="font-size:13px;color:#3b82f6">jhcarrepaircentre@gmail.com</div>
+      </div>
+      <div style="background:#0d0f14;padding:22px 20px;text-align:center">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;color:#5a6080;margin-bottom:8px">SCAN TO BOOK</div>
+        <canvas id="qr-canvas" width="100" height="100" style="display:inline-block"></canvas>
+      </div>
+    </div>
   </div>
 </div>
 
-<main>
-  <div class="card card-red">
-    <h2>📋 Book a Job</h2>
-
-    <div id="booking-closed-notice" style="display:none; background:rgba(232,23,44,0.1); border:1px solid rgba(232,23,44,0.3); border-radius:4px; padding:20px; text-align:center; margin-bottom:16px;">
-      <div style="font-size:2rem; margin-bottom:8px;">🚫</div>
-      <div style="font-weight:700; color:#f5c400; font-size:1rem; margin-bottom:8px;">Bookings Currently Closed</div>
-      <a href="tel:+447855222963" style="display:inline-block; background:#f5c400; color:#fff; text-decoration:none; padding:12px 24px; border-radius:4px; font-weight:700;">📞 Call +44 7855 222963</a>
+<!-- ══════════════════════ BOOKING -->
+<div id="p-booking" class="page">
+  <div style="max-width:600px;margin:0 auto;padding:24px 18px">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px">
+      <button class="btn btn-dark btn-sm" onclick="go('p-home')">← Back</button>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800">Book a Repair</span>
+    </div>
+    <div id="step-bars" style="display:flex;gap:6px;margin-bottom:26px">
+      <div id="bar1" style="flex:1;height:4px;border-radius:2px;background:#c0392b;transition:background .3s"></div>
+      <div id="bar2" style="flex:1;height:4px;border-radius:2px;background:#1e2535;transition:background .3s"></div>
+      <div id="bar3" style="flex:1;height:4px;border-radius:2px;background:#1e2535;transition:background .3s"></div>
     </div>
 
-    <div id="booking-form">
-      <div class="field"><label>Your Name</label><input type="text" id="f-name" placeholder="Full name" /></div>
-      <div class="field"><label>Your Phone</label><input type="tel" id="f-phone" placeholder="Your mobile number" /></div>
-      <div class="field"><label>Vehicle Reg</label><input type="text" id="f-reg" placeholder="e.g. AB12 CDE" style="text-transform:uppercase" /></div>
-
-      <div class="field">
-        <label>Service Required</label>
-        <select id="f-service">
-          <option value="">— Select a service —</option>
-          <optgroup label="🔧 Diagnostics">
-            <option>Diagnostics</option>
-          </optgroup>
-          <optgroup label="🛢 Service">
-            <option>Air Filter</option>
-            <option>Oil Filter</option>
-            <option>Fuel Filter</option>
-            <option>Cabin Filter</option>
-            <option>Engine Oil</option>
-          </optgroup>
-          <optgroup label="🔩 Suspension">
-            <option>Wishbone Upper</option>
-            <option>Wishbone Lower</option>
-            <option>Track Rod</option>
-            <option>Tie Rod</option>
-            <option>Ball Joint</option>
-            <option>Stabiliser Link</option>
-            <option>Coil Spring</option>
-            <option>Front Wheel Bearing</option>
-            <option>Shock Absorber</option>
-            <option>Strut Mount</option>
-            <option>Drive Shaft</option>
-            <option>CV Joints</option>
-          </optgroup>
-          <optgroup label="🛑 Brakes">
-            <option>Brake Fluid Service</option>
-            <option>Front Pads</option>
-            <option>Front Disc</option>
-            <option>Rear Pads</option>
-            <option>Rear Disc</option>
-            <option>Rear Wheel Bearing</option>
-            <option>Front Caliper LH</option>
-            <option>Front Caliper RH</option>
-            <option>Rear Caliper LH</option>
-            <option>Rear Caliper RH</option>
-            <option>Front ABS Sensor</option>
-            <option>Rear ABS Sensor</option>
-          </optgroup>
-          <optgroup label="🌡 Cooling">
-            <option>Coolant Flush</option>
-            <option>Radiator</option>
-            <option>Temperature Sensor</option>
-            <option>AC Condenser</option>
-          </optgroup>
-          <optgroup label="⚙️ Transmission">
-            <option>Clutch Kit</option>
-            <option>Flywheel</option>
-            <option>Slave Cylinder</option>
-            <option>Release Bearing</option>
-            <option>Transmission Service</option>
-            <option>Gearbox Filter</option>
-            <option>Gearbox Oil</option>
-          </optgroup>
-          <optgroup label="💨 Engine & Emissions">
-            <option>Turbo</option>
-            <option>DPF</option>
-            <option>Carbon Clean</option>
-            <option>EGR</option>
-            <option>Oxygen Sensor Bank 1</option>
-            <option>Oxygen Sensor Bank 2</option>
-            <option>Oil Cooler</option>
-          </optgroup>
-          <optgroup label="🔇 Exhaust">
-            <option>Front Pipe</option>
-            <option>Middle Pipe</option>
-            <option>Back Box</option>
-          </optgroup>
-          <optgroup label="❓ Other">
-            <option>Other (describe below)</option>
-          </optgroup>
-        </select>
+    <!-- Step 1 -->
+    <div id="bk1" class="fade">
+      <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;margin-bottom:4px">Your Details</h2>
+      <p style="color:#5a6080;font-size:13px;margin-bottom:22px">Step 1 of 3</p>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div><label>Full Name *</label><input class="inp" id="b-name" placeholder="Your full name" oninput="chk1()"/></div>
+        <div><label>Phone Number *</label><input class="inp" id="b-phone" placeholder="07700 000000" oninput="chk1()"/></div>
+        <div><label>Email Address</label><input class="inp" id="b-email" placeholder="you@email.com" type="email"/></div>
+        <button class="btn btn-red" id="btn1" onclick="goStep(2)" style="opacity:.4;margin-top:6px" disabled>Continue →</button>
       </div>
+    </div>
 
-      <div class="field">
-        <label>Preferred Date &nbsp;<span style="color:#2a2a00;font-size:0.6rem;font-weight:700;">■ Blocked</span> &nbsp;<span style="color:#2a2a2a;font-size:0.6rem;font-weight:700;">■ Closed</span></label>
-        <input type="hidden" id="f-date" />
-        <div class="cal-wrap">
-          <div class="cal-header">
-            <button class="cal-nav" onclick="changeMonth(-1)">&#8249;</button>
-            <span id="cal-month-label"></span>
-            <button class="cal-nav" onclick="changeMonth(1)">&#8250;</button>
-          </div>
-          <div class="cal-days-header">
-            <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
-          </div>
-          <div class="cal-grid" id="cal-grid"></div>
-          <div class="cal-selected-display" id="cal-selected-display">Select a date above</div>
+    <!-- Step 2 -->
+    <div id="bk2" style="display:none" class="fade">
+      <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;margin-bottom:4px">Your Car & Damage</h2>
+      <p style="color:#5a6080;font-size:13px;margin-bottom:22px">Step 2 of 3</p>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div><label>Plate Number *</label><input class="inp" id="b-plate" placeholder="AB12 CDE" style="font-weight:700;font-size:16px;letter-spacing:.1em;text-transform:uppercase" oninput="this.value=this.value.toUpperCase();chk2()"/></div>
+        <div>
+          <label>Service Needed *</label>
+          <select class="inp" id="b-service" onchange="chk2()">
+            <option value="">Select a service...</option>
+            <option>Full Respray</option><option>Dent Repair</option><option>Scratch Fix</option>
+            <option>Panel Replace</option><option>Bumper Repair</option><option>Paint Touch-up</option>
+            <option>PDR (Paintless)</option><option>Other</option>
+          </select>
+        </div>
+        <div>
+          <label>Damaged Panels <span style="font-family:'Barlow',sans-serif;text-transform:none;letter-spacing:0;font-size:10px;color:#3a4060">(tap all that apply)</span></label>
+          <div id="panels-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:4px"></div>
+        </div>
+        <div><label>Additional Notes</label><textarea class="inp" id="b-notes" rows="3" placeholder="Any details about the damage..." style="resize:vertical"></textarea></div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-dark" onclick="goStep(1)">← Back</button>
+          <button class="btn btn-red" id="btn2" onclick="goStep(3)" style="flex:1;opacity:.4" disabled>Continue →</button>
         </div>
       </div>
+    </div>
 
-      <div class="field"><label>Notes / Description</label><textarea id="f-notes" placeholder="Any extra details about the problem..."></textarea></div>
-      <button class="submit-btn" onclick="submitBooking()">⚙ Submit Booking via WhatsApp</button>
-      <div class="success-box" id="success-box">✅ WhatsApp opened — your booking details are ready to send!</div>
+    <!-- Step 3 -->
+    <div id="bk3" style="display:none" class="fade">
+      <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;margin-bottom:4px">Photos & Time Slot</h2>
+      <p style="color:#5a6080;font-size:13px;margin-bottom:22px">Step 3 of 3</p>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div>
+          <label>Upload Damage Photos</label>
+          <div id="upload-zone" style="border:2px dashed #1e2535;border-radius:10px;padding:28px;text-align:center;cursor:pointer" onclick="document.getElementById('photo-input').click()" onmouseenter="this.style.borderColor='#c0392b'" onmouseleave="this.style.borderColor='#1e2535'">
+            <div style="font-size:36px;margin-bottom:8px">📸</div>
+            <div style="font-size:14px;font-weight:600;margin-bottom:4px">Click to upload photos of the damage</div>
+            <div style="font-size:12px;color:#5a6080">JPG, PNG — up to 10 photos</div>
+          </div>
+          <input type="file" id="photo-input" multiple accept="image/*" style="display:none" onchange="handlePhotos(this)"/>
+          <div id="photo-preview" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div><label>Preferred Date *</label><input class="inp" id="b-date" type="date" onchange="chk3()"/></div>
+          <div>
+            <label>Preferred Time</label>
+            <select class="inp" id="b-time">
+              <option>08:00</option><option selected>09:00</option><option>10:00</option>
+              <option>11:00</option><option>12:00</option><option>13:00</option>
+              <option>14:00</option><option>15:00</option><option>16:00</option>
+            </select>
+          </div>
+        </div>
+        <div class="card">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;color:#5a6080;margin-bottom:10px">BOOKING SUMMARY</div>
+          <div id="bk-summary"></div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-dark" onclick="goStep(2)">← Back</button>
+          <button class="btn btn-red" id="btn3" onclick="submitBooking()" style="flex:1;opacity:.4" disabled>✓ Submit Booking</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirmation -->
+    <div id="bk-done" style="display:none;text-align:center;padding:40px 0" class="fade">
+      <div style="font-size:64px;margin-bottom:16px">🎉</div>
+      <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:800;margin-bottom:8px">Booking Received!</h2>
+      <p style="color:#5a6080;font-size:14px;line-height:1.65;max-width:380px;margin:0 auto 24px">We will review your photos and contact you on <strong id="conf-phone"></strong> with a quote very soon.</p>
+      <div class="card" style="max-width:300px;margin:0 auto 24px;text-align:center">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;color:#5a6080;margin-bottom:8px">YOUR BOOKING REFERENCE</div>
+        <div id="conf-ref" style="font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:800;color:#c0392b;letter-spacing:.1em"></div>
+        <div style="font-size:12px;color:#5a6080;margin-top:6px">Save this to track your repair progress</div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-red" id="btn-track-new">🔍 Track My Job</button>
+        <button class="btn btn-dark" onclick="resetBooking();go('p-home')">Back to Home</button>
+      </div>
     </div>
   </div>
+</div>
 
-  <div class="right-col">
-    <div class="card card-gold" style="max-height:480px; overflow-y:auto;">
-      <h3>Our Services</h3>
-      <div class="svc-group"><div class="svc-group-title">🔧 Diagnostics</div><div class="svc"><div class="svc-dot"></div>Diagnostics</div></div>
-      <div class="svc-group"><div class="svc-group-title">🛢 Service</div><div class="svc"><div class="svc-dot"></div>Air Filter</div><div class="svc"><div class="svc-dot"></div>Oil Filter</div><div class="svc"><div class="svc-dot"></div>Fuel Filter</div><div class="svc"><div class="svc-dot"></div>Cabin Filter</div><div class="svc"><div class="svc-dot"></div>Engine Oil</div></div>
-      <div class="svc-group"><div class="svc-group-title">🔩 Suspension</div><div class="svc"><div class="svc-dot"></div>Wishbone Upper / Lower</div><div class="svc"><div class="svc-dot"></div>Track Rod / Tie Rod</div><div class="svc"><div class="svc-dot"></div>Ball Joint</div><div class="svc"><div class="svc-dot"></div>Stabiliser Link</div><div class="svc"><div class="svc-dot"></div>Coil Spring</div><div class="svc"><div class="svc-dot"></div>Front Wheel Bearing</div><div class="svc"><div class="svc-dot"></div>Shock Absorber</div><div class="svc"><div class="svc-dot"></div>Strut Mount</div><div class="svc"><div class="svc-dot"></div>Drive Shaft / CV Joints</div></div>
-      <div class="svc-group"><div class="svc-group-title">🛑 Brakes</div><div class="svc"><div class="svc-dot"></div>Brake Fluid Service</div><div class="svc"><div class="svc-dot"></div>Front & Rear Pads / Discs</div><div class="svc"><div class="svc-dot"></div>Rear Wheel Bearing</div><div class="svc"><div class="svc-dot"></div>Calipers LH & RH (F/R)</div><div class="svc"><div class="svc-dot"></div>Front / Rear ABS Sensor</div></div>
-      <div class="svc-group"><div class="svc-group-title">🌡 Cooling</div><div class="svc"><div class="svc-dot"></div>Coolant Flush</div><div class="svc"><div class="svc-dot"></div>Radiator</div><div class="svc"><div class="svc-dot"></div>Temperature Sensor</div><div class="svc"><div class="svc-dot"></div>AC Condenser</div></div>
-      <div class="svc-group"><div class="svc-group-title">⚙️ Transmission</div><div class="svc"><div class="svc-dot"></div>Clutch Kit / Flywheel</div><div class="svc"><div class="svc-dot"></div>Slave Cylinder / Release Bearing</div><div class="svc"><div class="svc-dot"></div>Transmission Service</div><div class="svc"><div class="svc-dot"></div>Gearbox Filter / Oil</div></div>
-      <div class="svc-group"><div class="svc-group-title">💨 Engine & Emissions</div><div class="svc"><div class="svc-dot"></div>Turbo</div><div class="svc"><div class="svc-dot"></div>DPF</div><div class="svc"><div class="svc-dot"></div>Carbon Clean</div><div class="svc"><div class="svc-dot"></div>EGR</div><div class="svc"><div class="svc-dot"></div>Oxygen Sensors Bank 1 & 2</div><div class="svc"><div class="svc-dot"></div>Oil Cooler</div></div>
-      <div class="svc-group"><div class="svc-group-title">🔇 Exhaust</div><div class="svc"><div class="svc-dot"></div>Front Pipe</div><div class="svc"><div class="svc-dot"></div>Middle Pipe</div><div class="svc"><div class="svc-dot"></div>Back Box</div></div>
+<!-- ══════════════════════ TRACKER -->
+<div id="p-tracker" class="page">
+  <div style="max-width:540px;margin:0 auto;padding:32px 18px">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+      <button class="btn btn-dark btn-sm" onclick="go('p-home')">← Back</button>
+      <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800">Track Your Repair</h2>
     </div>
-
-    <!-- QR CODE pointing to the live site -->
-    <div class="card qr-card">
-      <h2 style="color:#fff;font-size:1rem;letter-spacing:2px;margin-bottom:6px;">SCAN TO BOOK</h2>
-      <p>Scan with any phone → opens booking page</p>
-      <div class="qr-wrap" id="qr-box"></div>
-      <div class="qr-note">✅ Works on any phone instantly</div>
-      <button class="qr-dl" onclick="dlQR()">↓ Download QR Code</button>
+    <p style="color:#5a6080;font-size:13px;margin-bottom:18px">Enter your booking reference or number plate</p>
+    <div style="display:flex;gap:10px;margin-bottom:20px">
+      <input class="inp" id="track-q" placeholder="e.g. JH-001 or AB12 CDE" style="font-weight:700;letter-spacing:.05em" onkeydown="if(event.key==='Enter')doTrack()"/>
+      <button class="btn btn-red btn-sm" onclick="doTrack()" style="white-space:nowrap;padding:12px 20px">Track →</button>
     </div>
+    <div id="track-err" style="display:none;padding:12px 16px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:8px;font-size:13px;color:#f87171;margin-bottom:14px">No booking found. Please check your reference or plate number.</div>
+    <div id="track-result"></div>
+    <div id="track-hint" style="padding:12px 16px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);border-radius:8px;font-size:12px;color:#60a5fa;margin-top:16px">
+      💡 Use the booking reference you received (e.g. JH-001) or your number plate
+    </div>
+  </div>
+</div>
 
-    <!-- CLICKABLE CALL BUTTON -->
-    <a class="contact-bar" href="tel:+447855222963">
-      <div class="icon">📞</div>
+<!-- ══════════════════════ LOGIN -->
+<div id="p-login" class="page">
+  <div style="max-width:340px;margin:80px auto;padding:0 18px">
+    <button class="btn btn-dark btn-sm" onclick="go('p-home')" style="margin-bottom:22px">← Back</button>
+    <div class="card fade">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+        <div class="logo-box"><svg width="20" height="20" viewBox="0 0 32 32" fill="none"><path d="M4 22 Q8 8 16 6 Q24 8 28 22" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/><rect x="3" y="20" width="26" height="7" rx="3" fill="rgba(255,255,255,0.15)" stroke="#fff" stroke-width="1.5"/><circle cx="9" cy="24" r="2.5" fill="#fff"/><circle cx="23" cy="24" r="2.5" fill="#fff"/></svg></div>
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:15px;line-height:1">Manager Login</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.15em">JH CAR REPAIR CENTRE LTD</div>
+        </div>
+      </div>
+      <div style="margin-bottom:14px">
+        <label>Password</label>
+        <input class="inp" id="mgr-pw" type="password" placeholder="Enter manager password" onkeydown="if(event.key==='Enter')doLogin()"/>
+        <div id="login-err" style="display:none;color:#ef4444;font-size:12px;margin-top:6px">Incorrect password.</div>
+      </div>
+      <button class="btn btn-red" onclick="doLogin()" style="width:100%">Login →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ MANAGER -->
+<div id="p-manager" class="page">
+  <div style="background:#0b0d14;border-bottom:1px solid #1e2535;padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="logo-box" style="width:32px;height:32px"><svg width="18" height="18" viewBox="0 0 32 32" fill="none"><path d="M4 22 Q8 8 16 6 Q24 8 28 22" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/><rect x="3" y="20" width="26" height="7" rx="3" fill="rgba(255,255,255,0.15)" stroke="#fff" stroke-width="1.5"/><circle cx="9" cy="24" r="2.5" fill="#fff"/><circle cx="23" cy="24" r="2.5" fill="#fff"/></svg></div>
       <div>
-        <div class="lbl">Call Us Direct</div>
-        <div class="number">+44 7855 222963</div>
-      </div>
-    </a>
-  </div>
-</main>
-
-<!-- OWNER CONTROLS — password protected -->
-<div class="owner-section">
-  <button class="owner-toggle" onclick="toggleOwnerSection()">⚙ OWNER LOGIN</button>
-
-  <!-- Password Gate -->
-  <div class="pw-gate" id="pw-gate" style="display:none;">
-    <h3>🔐 Owner Access</h3>
-    <input type="password" id="pw-input" placeholder="Enter password" onkeydown="if(event.key==='Enter')checkPW()" />
-    <button class="pw-btn" onclick="checkPW()">Unlock</button>
-    <div class="pw-error" id="pw-error">❌ Incorrect password</div>
-  </div>
-
-  <!-- Actual Controls (hidden until password correct) -->
-  <div class="owner-card" id="owner-card">
-    <h2>🔧 Owner Control Panel</h2>
-    <p>Changes apply instantly to the calendar</p>
-    <div class="owner-grid">
-      <div class="control-box">
-        <h4 class="open-label">Booking Status & Days</h4>
-        <div class="toggle-row"><span>Accept Bookings</span><label class="toggle-switch"><input type="checkbox" id="toggle-bookings" checked onchange="toggleBookings()"><span class="slider"></span></label></div>
-        <div class="toggle-row"><span>Mon – Fri</span><label class="toggle-switch"><input type="checkbox" id="toggle-weekdays" checked onchange="saveDays()"><span class="slider"></span></label></div>
-        <div class="toggle-row"><span>Saturday</span><label class="toggle-switch"><input type="checkbox" id="toggle-sat" checked onchange="saveDays()"><span class="slider"></span></label></div>
-        <div class="toggle-row"><span>Sunday</span><label class="toggle-switch"><input type="checkbox" id="toggle-sun" onchange="saveDays()"><span class="slider"></span></label></div>
-      </div>
-      <div class="control-box">
-        <h4 class="block-label">🚫 Block Specific Dates</h4>
-        <p style="font-size:0.72rem;color:#555;margin-bottom:8px;">Blocked dates are unclickable in the calendar</p>
-        <div class="add-block-row">
-          <input type="date" id="block-input" />
-          <button class="add-block-btn" onclick="addBlock()">Block</button>
-        </div>
-        <div class="blocked-list" id="blocked-list">
-          <div style="font-size:0.75rem;color:#444;margin-top:8px;">No dates blocked yet</div>
-        </div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;line-height:1">JH CAR REPAIR CENTRE</div>
+        <div style="font-size:8px;color:#3a4060;letter-spacing:.2em;font-family:'Barlow Condensed',sans-serif">MANAGER DASHBOARD</div>
       </div>
     </div>
-    <button class="lock-btn" onclick="lockPanel()">🔒 Lock Controls</button>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span id="job-count" style="font-size:12px;color:#5a6080"></span>
+      <button class="btn btn-dark btn-sm" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr;min-height:calc(100vh - 56px)" id="mgr-wrap">
+    <div style="padding:16px 18px;overflow-y:auto">
+      <div id="mgr-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:14px"></div>
+      <div id="mgr-filters" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px"></div>
+      <div id="mgr-list"></div>
+    </div>
+    <div id="mgr-detail" style="display:none;background:#0b0d14;border-left:1px solid #1e2535;overflow-y:auto;position:sticky;top:56px;max-height:calc(100vh - 56px)"></div>
   </div>
 </div>
 
-<footer>© Car Care Centre · Birmingham · All Rights Reserved</footer>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
-  // ── QR Code pointing to the LIVE site ──
-  var SITE_URL = "https://tiktak5757.github.io/CAR-CARE-CENTRE-";
-  new QRCode(document.getElementById('qr-box'), {
-    text: SITE_URL,
-    width: 180, height: 180,
-    colorDark: '#000000', colorLight: '#ffffff',
-    correctLevel: QRCode.CorrectLevel.M
+// ── DATA
+var PANELS = ["Front Bumper","Rear Bumper","Bonnet","Boot/Tailgate","Front Wing L","Front Wing R","Rear Wing L","Rear Wing R","Front Door L","Front Door R","Rear Door L","Rear Door R","Roof","Sill L","Sill R","Windscreen","Rear Screen","A-Pillar L","A-Pillar R"];
+var STATUS = {
+  waiting:    {l:"Awaiting Quote", c:"#60a5fa", bg:"rgba(96,165,250,.12)"},
+  quoted:     {l:"Quote Sent",     c:"#f59e0b", bg:"rgba(245,158,11,.12)"},
+  confirmed:  {l:"Confirmed",      c:"#a78bfa", bg:"rgba(167,139,250,.12)"},
+  inprogress: {l:"In Progress",    c:"#e85d26", bg:"rgba(232,93,38,.12)"},
+  completed:  {l:"Completed",      c:"#22c55e", bg:"rgba(34,197,94,.12)"}
+};
+var PASS = "HIJAZI @+++";
+var bookings = JSON.parse(localStorage.getItem("jh_bk") || "[]");
+var selBk = null;
+var filterSt = "all";
+var selPanels = [];
+var uploadedPhotos = [];
+
+function save() { localStorage.setItem("jh_bk", JSON.stringify(bookings)); }
+function genRef() { return "JH-" + String(bookings.length + 1).padStart(3,"0"); }
+
+// ── NAVIGATION
+function go(id) {
+  document.querySelectorAll(".page").forEach(function(p){ p.classList.remove("active"); });
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0,0);
+}
+
+// ── NOTIFICATION
+function notify(msg, type) {
+  var n = document.getElementById("notif");
+  n.textContent = msg;
+  n.className = "notif " + (type || "ok");
+  n.style.display = "block";
+  setTimeout(function(){ n.style.display = "none"; }, 3000);
+}
+
+// ── QR CODE
+function drawQR() {
+  var canvas = document.getElementById("qr-canvas");
+  if (!canvas) return;
+  var ctx = canvas.getContext("2d");
+  var size = 100, cells = 21, cell = size / cells;
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, size, size);
+  ctx.fillStyle = "#111";
+  for (var r = 0; r < cells; r++) {
+    for (var c = 0; c < cells; c++) {
+      var on = 0;
+      if (r < 7 && c < 7) on = 1;
+      else if (r < 7 && c >= cells-7) on = 1;
+      else if (r >= cells-7 && c < 7) on = 1;
+      else if (r>=2&&r<=4&&c>=2&&c<=4) on = 1;
+      else if (r>=2&&r<=4&&c>=cells-5&&c<=cells-3) on = 1;
+      else if (r>=cells-5&&r<=cells-3&&c>=2&&c<=4) on = 1;
+      else on = (Math.abs(Math.sin(r*17+c*13+7)) > 0.5) ? 1 : 0;
+      if (on) ctx.fillRect(c*cell, r*cell, cell, cell);
+    }
+  }
+}
+window.addEventListener("load", drawQR);
+
+// ── BOOKING PANELS GRID
+(function() {
+  var grid = document.getElementById("panels-grid");
+  PANELS.forEach(function(p) {
+    var btn = document.createElement("button");
+    btn.className = "panel-btn";
+    btn.textContent = p;
+    btn.onclick = function() {
+      var i = selPanels.indexOf(p);
+      if (i > -1) { selPanels.splice(i,1); btn.classList.remove("sel"); }
+      else { selPanels.push(p); btn.classList.add("sel"); }
+    };
+    grid.appendChild(btn);
   });
+})();
 
-  function dlQR() {
-    setTimeout(function() {
-      var canvas = document.querySelector('#qr-box canvas');
-      if (!canvas) return;
-      var a = document.createElement('a');
-      a.download = 'CarCareCentre-QR.png';
-      a.href = canvas.toDataURL('image/png');
-      a.click();
-    }, 300);
+// ── BOOKING STEPS
+function chk1() {
+  var ok = document.getElementById("b-name").value.trim() && document.getElementById("b-phone").value.trim();
+  var btn = document.getElementById("btn1");
+  btn.disabled = !ok; btn.style.opacity = ok ? 1 : 0.4;
+}
+function chk2() {
+  var ok = document.getElementById("b-plate").value.trim() && document.getElementById("b-service").value;
+  var btn = document.getElementById("btn2");
+  btn.disabled = !ok; btn.style.opacity = ok ? 1 : 0.4;
+}
+function chk3() {
+  var ok = document.getElementById("b-date").value;
+  var btn = document.getElementById("btn3");
+  btn.disabled = !ok; btn.style.opacity = ok ? 1 : 0.4;
+}
+
+function goStep(n) {
+  document.getElementById("bk1").style.display = n===1?"block":"none";
+  document.getElementById("bk2").style.display = n===2?"block":"none";
+  document.getElementById("bk3").style.display = n===3?"block":"none";
+  document.getElementById("bar1").style.background = n>=1?"#c0392b":"#1e2535";
+  document.getElementById("bar2").style.background = n>=2?"#c0392b":"#1e2535";
+  document.getElementById("bar3").style.background = n>=3?"#c0392b":"#1e2535";
+  if (n===3) buildSummary();
+}
+
+function buildSummary() {
+  var rows = [
+    ["Name", document.getElementById("b-name").value],
+    ["Phone", document.getElementById("b-phone").value],
+    ["Plate", document.getElementById("b-plate").value],
+    ["Service", document.getElementById("b-service").value],
+    ["Panels", selPanels.join(", ") || "None selected"],
+    ["Date", document.getElementById("b-date").value + " at " + document.getElementById("b-time").value],
+    ["Photos", uploadedPhotos.length + " uploaded"]
+  ];
+  document.getElementById("bk-summary").innerHTML = rows.map(function(r) {
+    return '<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #0d1018;font-size:13px">' +
+      '<span style="color:#5a6080">' + r[0] + '</span>' +
+      '<span style="color:#e8e8e8;font-weight:500;text-align:right;max-width:60%">' + (r[1]||"—") + '</span></div>';
+  }).join("");
+}
+
+function handlePhotos(inp) {
+  uploadedPhotos = Array.from(inp.files);
+  var prev = document.getElementById("photo-preview");
+  prev.innerHTML = "";
+  uploadedPhotos.forEach(function(f) {
+    var d = document.createElement("div");
+    d.style.cssText = "aspect-ratio:4/3;background:#1a2035;border-radius:6px;overflow:hidden;border:1px solid #1e2535;";
+    var img = document.createElement("img");
+    img.src = URL.createObjectURL(f);
+    img.style.cssText = "width:100%;height:100%;object-fit:cover;";
+    d.appendChild(img);
+    prev.appendChild(d);
+  });
+  buildSummary();
+}
+
+function submitBooking() {
+  var ref = genRef();
+  var today = new Date().toLocaleDateString("en-GB",{day:"2-digit",month:"short"});
+  var bk = {
+    id: ref,
+    plate: document.getElementById("b-plate").value.toUpperCase(),
+    name: document.getElementById("b-name").value,
+    phone: document.getElementById("b-phone").value,
+    email: document.getElementById("b-email").value,
+    service: document.getElementById("b-service").value,
+    panels: selPanels.join(", "),
+    notes: document.getElementById("b-notes").value,
+    date: document.getElementById("b-date").value,
+    time: document.getElementById("b-time").value,
+    photoCount: uploadedPhotos.length,
+    status: "waiting",
+    price: null, deposit: 0,
+    created: today,
+    progress: 5,
+    timeline: [
+      {event:"Booking received", date:today, done:true},
+      {event:"Quote sent", date:"", done:false},
+      {event:"Deposit paid", date:"", done:false},
+      {event:"Work started", date:"", done:false},
+      {event:"Quality check", date:"", done:false},
+      {event:"Ready for collection", date:"", done:false}
+    ]
+  };
+  bookings.unshift(bk);
+  save();
+  document.getElementById("conf-ref").textContent = ref;
+  document.getElementById("conf-phone").textContent = bk.phone;
+  document.getElementById("bk3").style.display = "none";
+  document.getElementById("bk-done").style.display = "block";
+  document.getElementById("btn-track-new").onclick = function() {
+    document.getElementById("track-q").value = ref;
+    resetBooking(); go("p-tracker"); doTrack();
+  };
+}
+
+function resetBooking() {
+  selPanels = []; uploadedPhotos = [];
+  ["b-name","b-phone","b-email","b-plate","b-notes"].forEach(function(id){ document.getElementById(id).value=""; });
+  document.getElementById("b-service").value = "";
+  document.getElementById("b-date").value = "";
+  document.getElementById("photo-preview").innerHTML = "";
+  document.querySelectorAll(".panel-btn").forEach(function(b){ b.classList.remove("sel"); });
+  document.getElementById("bk-done").style.display = "none";
+  goStep(1); chk1(); chk2(); chk3();
+}
+
+// ── TRACKER
+function doTrack() {
+  var q = document.getElementById("track-q").value.trim().toLowerCase().replace(/\s/g,"");
+  var bk = null;
+  for (var i=0; i<bookings.length; i++) {
+    if (bookings[i].id.toLowerCase()===q || bookings[i].plate.toLowerCase().replace(/\s/g,"")===q) { bk=bookings[i]; break; }
   }
-
-  // ── Owner panel & password ──
-  var OWNER_PASSWORD = 'A1garage2024';
-  var ownerUnlocked = false;
-  var sectionVisible = false;
-
-  function toggleOwnerSection() {
-    sectionVisible = !sectionVisible;
-    if (!sectionVisible) {
-      document.getElementById('pw-gate').style.display = 'none';
-      document.getElementById('owner-card').style.display = 'none';
-      return;
-    }
-    if (ownerUnlocked) {
-      document.getElementById('owner-card').style.display = 'block';
-    } else {
-      document.getElementById('pw-gate').style.display = 'block';
-    }
+  document.getElementById("track-err").style.display = bk ? "none" : "block";
+  document.getElementById("track-hint").style.display = bk ? "none" : "block";
+  if (!bk) { document.getElementById("track-result").innerHTML=""; return; }
+  var st = STATUS[bk.status];
+  var pct = bk.progress || 5;
+  var html = '<div class="card" style="margin-bottom:14px">' +
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">' +
+    '<div><div style="font-family:\'Barlow Condensed\',sans-serif;font-size:22px;font-weight:800;color:#c0392b">' + bk.plate + '</div>' +
+    '<div style="font-size:13px;color:#a0a8c0;margin-top:2px">' + bk.name + '</div></div>' +
+    '<span class="tag" style="color:'+st.c+';background:'+st.bg+'">' + st.l + '</span></div>' +
+    '<div style="font-size:13px;color:#5a6080;margin-bottom:12px">' + bk.service + (bk.panels?" · "+bk.panels:"") + '</div>' +
+    '<div style="height:8px;background:#1e2535;border-radius:4px;overflow:hidden;margin-bottom:6px">' +
+    '<div style="height:100%;width:'+pct+'%;background:'+(pct===100?"#22c55e":"linear-gradient(90deg,#c0392b,#e05252)")+';border-radius:4px;transition:width .6s"></div></div>' +
+    '<div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#5a6080">Progress</span>' +
+    '<span style="color:'+(pct===100?"#22c55e":"#c0392b")+';font-weight:700">' + pct + '% complete</span></div></div>';
+  if (bk.price) {
+    html += '<div class="card" style="margin-bottom:14px;border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.04)">' +
+      '<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;color:#5a6080;margin-bottom:8px">YOUR QUOTE</div>' +
+      '<div style="display:flex;justify-content:space-between;align-items:center">' +
+      '<span style="color:#a0a8c0;font-size:14px">Total cost:</span>' +
+      '<span style="font-family:\'Barlow Condensed\',sans-serif;font-size:26px;font-weight:800;color:#22c55e">£' + bk.price + '</span></div>' +
+      (bk.deposit>0?'<div style="display:flex;justify-content:space-between;margin-top:6px"><span style="color:#5a6080;font-size:13px">Balance remaining:</span><span style="font-size:18px;font-weight:700;color:#f59e0b">£'+(bk.price-bk.deposit)+'</span></div>':'') +
+      '</div>';
   }
+  html += '<div class="card"><div style="font-family:\'Barlow Condensed\',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;color:#5a6080;margin-bottom:14px">REPAIR TIMELINE</div><div style="position:relative">' +
+    '<div style="position:absolute;left:11px;top:14px;bottom:14px;width:2px;background:#1e2535"></div>';
+  bk.timeline.forEach(function(t,i) {
+    var isActive = !t.done && (i===0 || bk.timeline[i-1].done);
+    var dotCls = t.done ? "step-dot-done" : (isActive ? "step-dot-active" : "step-dot-pending");
+    html += '<div style="display:flex;align-items:flex-start;gap:14px;padding-bottom:'+(i<bk.timeline.length-1?'18':'0')+'px;position:relative">' +
+      '<div style="width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;z-index:1;' +
+      (t.done?'background:#22c55e;color:#fff':isActive?'background:#c0392b;color:#fff':'background:#1e2535;color:#5a6080') + '">' + (t.done?"✓":"") + '</div>' +
+      '<div><div style="font-size:13px;font-weight:700;color:'+(t.done?"#e8e8e8":isActive?"#c0392b":"#3a4060")+'">' + t.event + '</div>' +
+      (t.date?'<div style="font-size:11px;color:'+(t.done?"#22c55e":"#5a6080")+';margin-top:2px">'+t.date+'</div>':'') +
+      (isActive?'<div style="font-size:11px;color:#c0392b;margin-top:2px">In progress...</div>':'') +
+      '</div></div>';
+  });
+  html += '</div></div>';
+  html += '<div style="margin-top:14px;padding:12px 16px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);border-radius:8px;font-size:12px;color:#60a5fa">📞 Questions? Call us: <strong>07312 016000</strong></div>';
+  document.getElementById("track-result").innerHTML = html;
+}
 
-  function checkPW() {
-    var val = document.getElementById('pw-input').value;
-    if (val === OWNER_PASSWORD) {
-      ownerUnlocked = true;
-      document.getElementById('pw-gate').style.display = 'none';
-      document.getElementById('pw-error').style.display = 'none';
-      document.getElementById('owner-card').style.display = 'block';
-      document.getElementById('pw-input').value = '';
-    } else {
-      document.getElementById('pw-error').style.display = 'block';
-    }
+// ── MANAGER
+function doLogin() {
+  if (document.getElementById("mgr-pw").value === PASS) {
+    document.getElementById("login-err").style.display = "none";
+    go("p-manager");
+    renderMgr();
+  } else {
+    document.getElementById("login-err").style.display = "block";
   }
+}
+function doLogout() { document.getElementById("mgr-pw").value=""; go("p-home"); }
 
-  function lockPanel() {
-    ownerUnlocked = false;
-    sectionVisible = false;
-    document.getElementById('owner-card').style.display = 'none';
-    document.getElementById('pw-gate').style.display = 'none';
+function renderMgr() {
+  var counts = {};
+  Object.keys(STATUS).forEach(function(k){ counts[k]=0; });
+  bookings.forEach(function(b){ if(counts[b.status]!==undefined) counts[b.status]++; });
+  document.getElementById("job-count").textContent = bookings.length + " total jobs";
+
+  document.getElementById("mgr-stats").innerHTML = Object.keys(STATUS).map(function(k) {
+    var st = STATUS[k];
+    return '<div class="card" style="padding:12px 14px;cursor:pointer;border:1px solid '+(filterSt===k?"#c0392b":"#1e2535")+'" onclick="setFilt(\''+k+'\')">' +
+      '<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:22px;font-weight:800;color:#c0392b">' + (counts[k]||0) + '</div>' +
+      '<div style="font-size:10px;font-family:\'Barlow Condensed\',sans-serif;font-weight:700;letter-spacing:.1em;color:#5a6080;margin-top:2px">' + st.l + '</div></div>';
+  }).join("");
+
+  var filterHtml = '<button class="panel-btn '+(filterSt==="all"?"sel":"")+'" onclick="setFilt(\'all\')" style="width:auto;padding:8px 14px">All ('+bookings.length+')</button>';
+  filterHtml += Object.keys(STATUS).map(function(k) {
+    return '<button class="panel-btn '+(filterSt===k?"sel":"")+'" onclick="setFilt(\''+k+'\')" style="width:auto;padding:8px 14px">'+STATUS[k].l+' ('+(counts[k]||0)+')</button>';
+  }).join("");
+  document.getElementById("mgr-filters").innerHTML = filterHtml;
+
+  var list = filterSt==="all" ? bookings : bookings.filter(function(b){ return b.status===filterSt; });
+  document.getElementById("mgr-list").innerHTML = list.length===0 ?
+    '<div style="text-align:center;padding:48px;color:#5a6080">No jobs found</div>' :
+    list.map(function(bk) {
+      var st = STATUS[bk.status];
+      return '<div class="card" style="padding:14px 16px;cursor:pointer;margin-bottom:8px;border:1px solid '+(selBk&&selBk.id===bk.id?"#c0392b":"#1e2535")+'" onclick="selJob(\''+bk.id+'\')">' +
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">' +
+        '<div><span style="font-family:\'Barlow Condensed\',sans-serif;font-size:16px;font-weight:800;color:#c0392b;letter-spacing:.05em">' + bk.plate + '</span>' +
+        '<span class="tag" style="margin-left:8px;color:'+st.c+';background:'+st.bg+'">' + st.l + '</span></div>' +
+        '<div style="text-align:right"><div style="font-size:13px;font-weight:700;color:'+(bk.price?"#22c55e":"#5a6080")+'">' + (bk.price?"£"+bk.price:"No quote") + '</div>' +
+        '<div style="font-size:10px;color:#3a4060;margin-top:2px">' + bk.id + '</div></div></div>' +
+        '<div style="font-size:12px;color:#a0a8c0">' + bk.name + ' · ' + bk.phone + '</div>' +
+        '<div style="font-size:11px;color:#5a6080;margin-top:2px">' + bk.service + (bk.panels?" · "+bk.panels:"") + '</div></div>';
+    }).join("");
+}
+
+function setFilt(f) { filterSt=f; renderMgr(); }
+
+function selJob(id) {
+  selBk = bookings.find(function(b){ return b.id===id; });
+  renderMgr();
+  renderDetail();
+  document.getElementById("mgr-detail").style.display = "block";
+  document.getElementById("mgr-wrap").style.gridTemplateColumns = "1fr 380px";
+}
+
+function closeDetail() {
+  selBk = null;
+  document.getElementById("mgr-detail").style.display = "none";
+  document.getElementById("mgr-wrap").style.gridTemplateColumns = "1fr";
+  renderMgr();
+}
+
+function renderDetail() {
+  if (!selBk) return;
+  var bk = selBk;
+  var today = new Date().toLocaleDateString("en-GB",{day:"2-digit",month:"short"});
+  var html = '<div style="padding:16px">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">' +
+    '<div><div style="font-family:\'Barlow Condensed\',sans-serif;font-size:20px;font-weight:800;color:#c0392b">' + bk.plate + '</div>' +
+    '<span class="tag" style="color:'+STATUS[bk.status].c+';background:'+STATUS[bk.status].bg+'">' + STATUS[bk.status].l + '</span></div>' +
+    '<button class="btn btn-dark btn-sm" onclick="closeDetail()">✕</button></div>';
+
+  // Customer info
+  html += '<div class="card" style="margin-bottom:10px">' +
+    '<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;color:#5a6080;margin-bottom:10px">CUSTOMER</div>' +
+    [["👤",bk.name],["📞",bk.phone],["✉️",bk.email||"No email"],["🔧",bk.service],["🚗",bk.panels||"No panels"],["📅",bk.date+" at "+bk.time],["📎",(bk.photoCount||0)+" photo(s)"]].map(function(r) {
+      return '<div style="display:flex;gap:8px;padding:4px 0;border-bottom:1px solid #0d1018;font-size:12px"><span>'+r[0]+'</span><span style="color:#a0a8c0">'+r[1]+'</span></div>';
+    }).join("") + '</div>';
+
+  // Quote
+  html += '<div class="card" style="margin-bottom:10px">' +
+    '<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;color:#5a6080;margin-bottom:8px">SEND QUOTE</div>' +
+    (bk.price?'<div style="font-size:12px;color:#22c55e;margin-bottom:8px">Current quote: £'+bk.price+'</div>':'') +
+    '<div style="display:flex;gap:8px"><input class="inp" id="d-price" type="number" placeholder="Enter price £" value="'+(bk.price||"")+'" style="flex:1"/>' +
+    '<button class="btn btn-red btn-sm" onclick="doQuote()">Send</button></div>' +
+    '<div style="font-size:11px;color:#5a6080;margin-top:6px">Customer sees this when they track their job</div></div>';
+
+  // Deposit
+  html += '<div class="card" style="margin-bottom:10px">' +
+    '<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;color:#5a6080;margin-bottom:8px">DEPOSIT</div>' +
+    '<div style="display:flex;gap:8px"><input class="inp" id="d-dep" type="number" placeholder="Deposit £" value="'+(bk.deposit||"")+'" style="flex:1"/>' +
+    '<button class="btn btn-dark btn-sm" onclick="doDep()">Save</button></div>' +
+    (bk.price&&bk.deposit?'<div style="font-size:12px;color:#f59e0b;margin-top:6px">Balance: £'+(bk.price-bk.deposit)+'</div>':'') + '</div>';
+
+  // Progress
+  html += '<div class="card" style="margin-bottom:10px">' +
+    '<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;color:#5a6080;margin-bottom:10px">UPDATE PROGRESS</div>';
+  bk.timeline.forEach(function(t,i) {
+    html += '<div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:6px;margin-bottom:5px;background:'+(t.done?"rgba(34,197,94,.08)":"transparent")+';border:1px solid '+(t.done?"rgba(34,197,94,.2)":"#1e2535")+'">' +
+      '<div style="width:20px;height:20px;border-radius:50%;background:'+(t.done?"#22c55e":"#1e2535")+';display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">'+(t.done?"✓":"")+'</div>' +
+      '<div style="flex:1"><div style="font-size:12px;font-weight:700;color:'+(t.done?"#22c55e":"#5a6080")+'">'+t.event+'</div>' +
+      (t.date?'<div style="font-size:10px;color:#5a6080">'+t.date+'</div>':'') + '</div>' +
+      (!t.done?'<button class="btn btn-sm" style="background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.2);font-size:10px;white-space:nowrap" onclick="doStep('+i+')">Mark ✓</button>':'') +
+      '</div>';
+  });
+  html += '</div>';
+
+  // Notes
+  html += '<div class="card" style="margin-bottom:10px">' +
+    '<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;color:#5a6080;margin-bottom:8px">NOTES</div>' +
+    '<textarea class="inp" id="d-notes" rows="3" placeholder="Internal notes...">'+(bk.notes||"")+'</textarea>' +
+    '<button class="btn btn-dark btn-sm" onclick="doNotes()" style="margin-top:8px;width:100%">Save Notes</button></div>';
+
+  html += '<button class="btn btn-sm" onclick="doDelete()" style="background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.25);width:100%;padding:10px">🗑 Delete Booking</button>';
+  html += '</div>';
+  document.getElementById("mgr-detail").innerHTML = html;
+}
+
+function doQuote() {
+  var p = parseFloat(document.getElementById("d-price").value);
+  if (!p||isNaN(p)) { notify("Enter a valid price","err"); return; }
+  var idx = bookings.findIndex(function(b){ return b.id===selBk.id; });
+  var today = new Date().toLocaleDateString("en-GB",{day:"2-digit",month:"short"});
+  bookings[idx].price = p; bookings[idx].status = "quoted";
+  bookings[idx].timeline[1].done = true; bookings[idx].timeline[1].date = today;
+  bookings[idx].progress = 20;
+  selBk = bookings[idx]; save(); renderDetail(); renderMgr();
+  notify("Quote of £"+p+" saved!");
+}
+
+function doDep() {
+  var d = parseFloat(document.getElementById("d-dep").value);
+  if (isNaN(d)) { notify("Enter a valid amount","err"); return; }
+  var idx = bookings.findIndex(function(b){ return b.id===selBk.id; });
+  var today = new Date().toLocaleDateString("en-GB",{day:"2-digit",month:"short"});
+  bookings[idx].deposit = d;
+  if (!bookings[idx].timeline[2].done) {
+    bookings[idx].timeline[2].done = true; bookings[idx].timeline[2].date = today;
+    bookings[idx].progress = 35; bookings[idx].status = "confirmed";
   }
+  selBk = bookings[idx]; save(); renderDetail(); renderMgr();
+  notify("Deposit of £"+d+" saved!");
+}
 
-  // ── Calendar ──
-  var blockedDates=[], allowWeekdays=true, allowSat=true, allowSun=false;
-  var bookingsOpen=true, selectedDate='';
-  var today=new Date(), calYear=today.getFullYear(), calMonth=today.getMonth();
-  var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
-
-  function toStr(y,m,d){return y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');}
-  function isBlocked(ds){return blockedDates.indexOf(ds)!==-1;}
-  function isDayOff(dow){if(dow===0)return !allowSun;if(dow===6)return !allowSat;return !allowWeekdays;}
-  function isPast(y,m,d){var t=new Date();t.setHours(0,0,0,0);return new Date(y,m,d)<t;}
-
-  function renderCalendar(){
-    document.getElementById('cal-month-label').textContent=MONTHS[calMonth]+' '+calYear;
-    var grid=document.getElementById('cal-grid');grid.innerHTML='';
-    var firstDay=(new Date(calYear,calMonth,1).getDay()+6)%7;
-    var dim=new Date(calYear,calMonth+1,0).getDate();
-    for(var i=0;i<firstDay;i++){var e=document.createElement('div');e.className='cal-day cal-empty';grid.appendChild(e);}
-    for(var d=1;d<=dim;d++){
-      var ds=toStr(calYear,calMonth,d);
-      var dow=new Date(calYear,calMonth,d).getDay();
-      var cell=document.createElement('div');cell.className='cal-day';cell.textContent=d;
-      if(isPast(calYear,calMonth,d)){cell.classList.add('cal-past');}
-      else if(isBlocked(ds)){cell.classList.add('cal-blocked');cell.title='Not available';}
-      else if(isDayOff(dow)){cell.classList.add('cal-dayoff');cell.title='Closed';}
-      else{(function(s,el){el.addEventListener('click',function(){selectDate(s);});})(ds,cell);}
-      if(ds===toStr(today.getFullYear(),today.getMonth(),today.getDate()))cell.classList.add('cal-today');
-      if(ds===selectedDate)cell.classList.add('cal-selected');
-      grid.appendChild(cell);
-    }
+function doStep(i) {
+  var idx = bookings.findIndex(function(b){ return b.id===selBk.id; });
+  var today = new Date().toLocaleDateString("en-GB",{day:"2-digit",month:"short"});
+  for (var j=0; j<=i; j++) {
+    if (!bookings[idx].timeline[j].done) { bookings[idx].timeline[j].done=true; bookings[idx].timeline[j].date=today; }
   }
+  var total = bookings[idx].timeline.length;
+  bookings[idx].progress = Math.round(((i+1)/total)*100);
+  var sm = ["waiting","quoted","confirmed","inprogress","inprogress","completed"];
+  bookings[idx].status = sm[i] || "inprogress";
+  selBk = bookings[idx]; save(); renderDetail(); renderMgr();
+  notify(bookings[idx].timeline[i].event + " marked complete!");
+}
 
-  function selectDate(ds){
-    selectedDate=ds;document.getElementById('f-date').value=ds;
-    var p=ds.split('-');
-    document.getElementById('cal-selected-display').innerHTML='📅 Selected: <span>'+p[2]+'/'+p[1]+'/'+p[0]+'</span>';
-    renderCalendar();
-  }
+function doNotes() {
+  var idx = bookings.findIndex(function(b){ return b.id===selBk.id; });
+  bookings[idx].notes = document.getElementById("d-notes").value;
+  selBk = bookings[idx]; save();
+  notify("Notes saved!");
+}
 
-  function changeMonth(dir){
-    calMonth+=dir;
-    if(calMonth<0){calMonth=11;calYear--;}
-    if(calMonth>11){calMonth=0;calYear++;}
-    renderCalendar();
-  }
-
-  function addBlock(){
-    var d=document.getElementById('block-input').value;
-    if(!d){alert('Please pick a date to block.');return;}
-    if(blockedDates.indexOf(d)!==-1){alert('Already blocked.');return;}
-    blockedDates.push(d);
-    if(selectedDate===d){selectedDate='';document.getElementById('f-date').value='';document.getElementById('cal-selected-display').innerHTML='Select a date above';}
-    renderBlocked();renderCalendar();
-    document.getElementById('block-input').value='';
-  }
-
-  function removeBlock(d){blockedDates=blockedDates.filter(function(x){return x!==d;});renderBlocked();renderCalendar();}
-
-  function renderBlocked(){
-    var el=document.getElementById('blocked-list');
-    if(!blockedDates.length){el.innerHTML='<div style="font-size:0.75rem;color:#444;margin-top:8px;">No dates blocked yet</div>';return;}
-    el.innerHTML='';
-    blockedDates.slice().sort().forEach(function(d){
-      var p=d.split('-');
-      var div=document.createElement('div');div.className='blocked-date-item';
-      div.innerHTML='🚫 '+p[2]+'/'+p[1]+'/'+p[0]+' <button class="remove-date" onclick="removeBlock(\''+d+'\')">✕ Remove</button>';
-      el.appendChild(div);
-    });
-  }
-
-  function saveDays(){
-    allowWeekdays=document.getElementById('toggle-weekdays').checked;
-    allowSat=document.getElementById('toggle-sat').checked;
-    allowSun=document.getElementById('toggle-sun').checked;
-    if(selectedDate){var dow=new Date(selectedDate+'T12:00:00').getDay();if(isDayOff(dow)){selectedDate='';document.getElementById('f-date').value='';document.getElementById('cal-selected-display').innerHTML='Select a date above';}}
-    renderCalendar();
-  }
-
-  function toggleBookings(){
-    bookingsOpen=document.getElementById('toggle-bookings').checked;
-    var banner=document.getElementById('status-banner');
-    var form=document.getElementById('booking-form');
-    var notice=document.getElementById('booking-closed-notice');
-    if(bookingsOpen){banner.textContent='✅ Bookings Open';banner.className='status-banner status-open';form.style.display='block';notice.style.display='none';}
-    else{banner.textContent='🚫 Bookings Currently Closed';banner.className='status-banner status-closed';form.style.display='none';notice.style.display='block';}
-  }
-
-  function submitBooking(){
-    var name=document.getElementById('f-name').value.trim();
-    var phone=document.getElementById('f-phone').value.trim();
-    var reg=document.getElementById('f-reg').value.trim();
-    var service=document.getElementById('f-service').value;
-    var date=document.getElementById('f-date').value;
-    var notes=document.getElementById('f-notes').value.trim();
-    if(!name||!phone||!service){alert('Please fill in name, phone and service.');return;}
-    if(!date){alert('Please select a date from the calendar.');return;}
-    var msg=encodeURIComponent('🔧 NEW BOOKING — Car Care Centre\n\nName: '+name+'\nPhone: '+phone+'\nVehicle Reg: '+(reg||'Not given')+'\nService: '+service+'\nDate: '+date.split('-').reverse().join('/')+'\nNotes: '+(notes||'None'));
-    window.open('https://wa.me/447855222963?text='+msg,'_blank');
-    document.getElementById('success-box').style.display='block';
-    ['f-name','f-phone','f-reg','f-notes'].forEach(function(id){document.getElementById(id).value='';});
-    document.getElementById('f-service').value='';
-    selectedDate='';document.getElementById('f-date').value='';
-    document.getElementById('cal-selected-display').innerHTML='Select a date above';
-    renderCalendar();
-  }
-
-  renderCalendar();
+function doDelete() {
+  if (!confirm("Delete this booking? Cannot be undone.")) return;
+  bookings = bookings.filter(function(b){ return b.id!==selBk.id; });
+  save(); closeDetail(); renderMgr();
+  notify("Booking deleted");
+}
 </script>
 </body>
 </html>
