@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Car Care Centre – Book a Job</title>
+<meta name="format-detection" content="telephone=yes">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111; color: #f0f0f0; font-family: Arial, sans-serif; min-height: 100vh; }
+
+  header { background: #0a0a0a; border-bottom: 4px solid #f5c400; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .logo-name { font-size: 1.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #fff; }
+  .logo-name span { color: #f5c400; }
+  .logo-sub { font-size: 0.7rem; color: #666; letter-spacing: 3px; margin-top: 2px; }
+  a.call-btn { background: #f5c400; color: #fff; text-decoration: none; font-size: 1rem; font-weight: 700; padding: 12px 20px; border-radius: 4px; letter-spacing: 1px; display: inline-block; }
+
+  .hero { background: linear-gradient(135deg, #0a0a00, #111); text-align: center; padding: 50px 24px 40px; border-bottom: 1px solid #222; }
+  .hero h1 { font-size: 2.8rem; font-weight: 900; text-transform: uppercase; line-height: 1.1; }
+  .hero h1 span { color: #f5c400; }
+  .hero p { color: #888; margin-top: 12px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 20px; }
+  .tag { border: 1px solid #333; color: #888; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 6px 14px; border-radius: 2px; }
+
+  main { max-width: 960px; margin: 0 auto; padding: 40px 20px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+  @media(max-width: 640px) { main { grid-template-columns: 1fr; } .hero h1 { font-size: 2rem; } }
+
+  .card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 6px; padding: 28px; position: relative; }
+  .card-red::before, .card-gold::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 6px 6px 0 0; }
+  .card-red::before { background: #f5c400; }
+  .card-gold::before { background: #f0c040; }
+  .card h2 { font-size: 1.1rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; color: #fff; }
+  .card h3 { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; color: #f0c040; }
+
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #666; margin-bottom: 6px; }
+  input[type=text], input[type=tel], input[type=password], select, textarea {
+    width: 100%; background: #0d0d0d; border: 1px solid #2a2a2a; border-radius: 4px;
+    color: #f0f0f0; font-family: Arial, sans-serif; font-size: 0.95rem; padding: 11px 14px; outline: none; transition: border-color 0.2s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: #f5c400; }
+  textarea { resize: vertical; min-height: 80px; }
+  optgroup { color: #f5c400; font-weight: 700; font-style: normal; background: #0d0d0d; }
+  option { color: #f0f0f0; background: #0d0d0d; }
+
+  .submit-btn { width: 100%; background: #f5c400; border: none; color: #fff; font-size: 1rem; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; padding: 16px; cursor: pointer; border-radius: 4px; margin-top: 6px; transition: background 0.2s; }
+  .submit-btn:hover { background: #d4a800; }
+  .success-box { display: none; background: rgba(0,180,80,0.1); border: 1px solid rgba(0,180,80,0.4); border-radius: 4px; padding: 14px; text-align: center; color: #4caf50; font-size: 0.9rem; font-weight: 600; margin-top: 14px; }
+
+  .svc-group { margin-bottom: 14px; }
+  .svc-group-title { font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #f5c400; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid #2a2a2a; }
+  .svc { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 0.85rem; font-weight: 500; color: #ccc; }
+  .svc-dot { width: 6px; height: 6px; background: #f5c400; border-radius: 50%; flex-shrink: 0; }
+
+  .right-col { display: flex; flex-direction: column; gap: 20px; }
+
+  /* QR CARD */
+  .qr-card { text-align: center; }
+  .qr-card p { font-size: 0.7rem; color: #555; letter-spacing: 1px; margin-bottom: 16px; }
+  .qr-wrap { background: #fff; padding: 14px; border-radius: 4px; display: block; width: fit-content; margin: 0 auto 16px; }
+  .qr-wrap canvas, .qr-wrap img { display: block; }
+  .qr-note { font-size: 0.68rem; color: #4caf50; letter-spacing: 1px; margin-bottom: 14px; }
+  .qr-dl { background: transparent; border: 1px solid #333; color: #666; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; padding: 9px 20px; cursor: pointer; font-family: Arial, sans-serif; transition: all 0.2s; border-radius: 3px; }
+  .qr-dl:hover { border-color: #f5c400; color: #f5c400; }
+
+  /* CONTACT BAR — clickable */
+  a.contact-bar { background: #f5c400; border-radius: 6px; padding: 20px 24px; display: flex; align-items: center; gap: 14px; text-decoration: none; transition: background 0.2s; }
+  a.contact-bar:hover { background: #d4a800; }
+  .contact-bar .icon { font-size: 1.8rem; }
+  .contact-bar .lbl { font-size: 0.65rem; color: rgba(255,255,255,0.7); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+  .contact-bar .number { font-size: 1.4rem; font-weight: 900; color: #fff; letter-spacing: 1px; }
+
+  /* CUSTOM CALENDAR */
+  .cal-wrap { background: #0d0d0d; border: 1px solid #2a2a2a; border-radius: 4px; overflow: hidden; }
+  .cal-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: #161616; border-bottom: 1px solid #2a2a2a; }
+  .cal-header span { font-weight: 700; font-size: 0.95rem; }
+  .cal-nav { background: transparent; border: 1px solid #333; color: #aaa; width: 30px; height: 30px; cursor: pointer; border-radius: 3px; font-size: 1rem; transition: all 0.2s; }
+  .cal-nav:hover { border-color: #f5c400; color: #f5c400; }
+  .cal-days-header { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; padding: 8px 6px 4px; }
+  .cal-days-header span { font-size: 0.65rem; font-weight: 700; color: #555; letter-spacing: 1px; text-transform: uppercase; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; padding: 4px 6px 10px; }
+  .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; border-radius: 4px; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; font-weight: 600; }
+  .cal-day:hover:not(.cal-blocked):not(.cal-past):not(.cal-empty):not(.cal-dayoff) { background: #2a2a2a; border-color: #f5c400; color: #f5c400; }
+  .cal-day.cal-selected { background: #f5c400 !important; color: #fff !important; border-color: #f5c400 !important; }
+  .cal-day.cal-today { border-color: #555; color: #fff; }
+  .cal-day.cal-past { color: #333; cursor: not-allowed; }
+  .cal-day.cal-empty { cursor: default; }
+  .cal-day.cal-blocked { background: #0a0a00 !important; color: #2a2a00 !important; cursor: not-allowed !important; border-color: #1a1a00 !important; text-decoration: line-through; position: relative; }
+  .cal-day.cal-blocked::after { content: '✕'; position: absolute; font-size: 0.5rem; top: 2px; right: 3px; color: #f5c400; opacity: 0.5; }
+  .cal-day.cal-dayoff { color: #2a2a2a !important; cursor: not-allowed !important; background: #111 !important; }
+  .cal-selected-display { padding: 10px 14px; font-size: 0.82rem; color: #888; border-top: 1px solid #2a2a2a; min-height: 38px; }
+  .cal-selected-display span { color: #4caf50; font-weight: 700; }
+
+  /* OWNER PANEL */
+  .owner-section { max-width: 960px; margin: 0 auto 60px; padding: 0 20px; }
+  .owner-toggle { background: transparent; border: 1px solid #f5c400; color: #f5c400; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; padding: 8px 16px; cursor: pointer; font-family: Arial, sans-serif; border-radius: 4px; transition: all 0.2s; margin-bottom: 16px; }
+  .owner-toggle:hover { border-color: #f5c400; color: #f5c400; }
+
+  /* Password gate */
+  .pw-gate { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 6px; padding: 28px; text-align: center; }
+  .pw-gate h3 { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #2196f3; margin-bottom: 16px; }
+  .pw-gate input { max-width: 240px; margin: 0 auto 12px; display: block; }
+  .pw-btn { background: #2196f3; border: none; color: #fff; font-size: 0.85rem; font-weight: 700; padding: 10px 28px; cursor: pointer; border-radius: 4px; font-family: Arial, sans-serif; transition: background 0.2s; }
+  .pw-btn:hover { background: #1565c0; }
+  .pw-error { color: #f5c400; font-size: 0.8rem; margin-top: 8px; display: none; }
+
+  .owner-card { display: none; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 6px; padding: 28px; position: relative; }
+  .owner-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #2196f3; border-radius: 6px 6px 0 0; }
+  .owner-card h2 { font-size: 1rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #2196f3; margin-bottom: 6px; }
+  .owner-card > p { font-size: 0.75rem; color: #555; margin-bottom: 20px; }
+  .owner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media(max-width: 500px) { .owner-grid { grid-template-columns: 1fr; } }
+  .control-box { background: #111; border: 1px solid #2a2a2a; border-radius: 4px; padding: 18px; }
+  .control-box h4 { font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; }
+  .open-label { color: #4caf50; }
+  .block-label { color: #f5c400; }
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #222; font-size: 0.85rem; font-weight: 600; }
+  .toggle-row:last-child { border-bottom: none; }
+  .toggle-switch { position: relative; width: 46px; height: 24px; flex-shrink: 0; }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+  .slider { position: absolute; cursor: pointer; inset: 0; background: #f5c400; border-radius: 24px; transition: 0.3s; }
+  .slider:before { content: ''; position: absolute; height: 18px; width: 18px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; }
+  input:checked + .slider { background: #4caf50; }
+  input:checked + .slider:before { transform: translateX(22px); }
+  .add-block-row { display: flex; gap: 8px; margin-top: 14px; }
+  .add-block-row input[type=date] { flex: 1; background: #0d0d0d; border: 1px solid #2a2a2a; border-radius: 4px; color: #f0f0f0; font-family: Arial, sans-serif; font-size: 0.9rem; padding: 10px 12px; outline: none; }
+  .add-block-btn { background: #f5c400; border: none; color: #fff; font-size: 0.8rem; font-weight: 700; padding: 10px 14px; cursor: pointer; border-radius: 4px; white-space: nowrap; font-family: Arial, sans-serif; }
+  .blocked-list { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; max-height: 200px; overflow-y: auto; }
+  .blocked-date-item { display: flex; align-items: center; justify-content: space-between; background: #0a0a00; border: 1px solid #2a2a00; border-radius: 3px; padding: 8px 12px; font-size: 0.82rem; color: #f5c400; }
+  .remove-date { background: transparent; border: 1px solid #f5c400; color: #f5c400; font-size: 0.7rem; cursor: pointer; padding: 2px 8px; border-radius: 2px; font-family: Arial, sans-serif; }
+  .remove-date:hover { background: #f5c400; color: #fff; }
+  .lock-btn { background: transparent; border: 1px solid #555; color: #555; font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase; padding: 6px 14px; cursor: pointer; border-radius: 3px; font-family: Arial, sans-serif; margin-top: 16px; transition: all 0.2s; }
+  .lock-btn:hover { border-color: #f5c400; color: #f5c400; }
+
+  .status-banner { text-align: center; padding: 10px 20px; font-size: 0.78rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+  .status-open { background: rgba(76,175,80,0.12); color: #4caf50; border-bottom: 1px solid rgba(76,175,80,0.2); }
+  .status-closed { background: rgba(232,23,44,0.12); color: #f5c400; border-bottom: 1px solid rgba(232,23,44,0.2); }
+  footer { text-align: center; padding: 20px; border-top: 1px solid #222; font-size: 0.65rem; color: #444; letter-spacing: 2px; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<div class="status-banner status-open" id="status-banner">✅ Bookings Open</div>
+
+<header>
+  <div>
+    <div class="logo-name"><span>CAR CARE</span> CENTRE</div>
+    <div class="logo-sub">Birmingham Birmingham &nbsp;·&nbsp; Quality Repairsnbsp;·Birmingham &nbsp;·&nbsp; Quality Repairsnbsp; Auto Repairs & Servicing</div>
+  </div>
+  <a class="call-btn" href="tel:+447855222963">📞 Call Us Now</a>
+</header>
+
+<div class="hero">
+  <h1>Book Your <span>Service</span><br>Online</h1>
+  <p>Fast, reliable auto repairs & servicing in Birmingham</p>
+  <div class="tags">
+    <div class="tag">Diagnostics</div>
+    <div class="tag">Brakes</div>
+    <div class="tag">Suspension</div>
+    <div class="tag">Transmission</div>
+    <div class="tag">Exhaust</div>
+  </div>
+</div>
+
+<main>
+  <div class="card card-red">
+    <h2>📋 Book a Job</h2>
+
+    <div id="booking-closed-notice" style="display:none; background:rgba(232,23,44,0.1); border:1px solid rgba(232,23,44,0.3); border-radius:4px; padding:20px; text-align:center; margin-bottom:16px;">
+      <div style="font-size:2rem; margin-bottom:8px;">🚫</div>
+      <div style="font-weight:700; color:#f5c400; font-size:1rem; margin-bottom:8px;">Bookings Currently Closed</div>
+      <a href="tel:+447855222963" style="display:inline-block; background:#f5c400; color:#fff; text-decoration:none; padding:12px 24px; border-radius:4px; font-weight:700;">📞 Call +44 7855 222963</a>
+    </div>
+
+    <div id="booking-form">
+      <div class="field"><label>Your Name</label><input type="text" id="f-name" placeholder="Full name" /></div>
+      <div class="field"><label>Your Phone</label><input type="tel" id="f-phone" placeholder="Your mobile number" /></div>
+      <div class="field"><label>Vehicle Reg</label><input type="text" id="f-reg" placeholder="e.g. AB12 CDE" style="text-transform:uppercase" /></div>
+
+      <div class="field">
+        <label>Service Required</label>
+        <select id="f-service">
+          <option value="">— Select a service —</option>
+          <optgroup label="🔧 Diagnostics">
+            <option>Diagnostics</option>
+          </optgroup>
+          <optgroup label="🛢 Service">
+            <option>Air Filter</option>
+            <option>Oil Filter</option>
+            <option>Fuel Filter</option>
+            <option>Cabin Filter</option>
+            <option>Engine Oil</option>
+          </optgroup>
+          <optgroup label="🔩 Suspension">
+            <option>Wishbone Upper</option>
+            <option>Wishbone Lower</option>
+            <option>Track Rod</option>
+            <option>Tie Rod</option>
+            <option>Ball Joint</option>
+            <option>Stabiliser Link</option>
+            <option>Coil Spring</option>
+            <option>Front Wheel Bearing</option>
+            <option>Shock Absorber</option>
+            <option>Strut Mount</option>
+            <option>Drive Shaft</option>
+            <option>CV Joints</option>
+          </optgroup>
+          <optgroup label="🛑 Brakes">
+            <option>Brake Fluid Service</option>
+            <option>Front Pads</option>
+            <option>Front Disc</option>
+            <option>Rear Pads</option>
+            <option>Rear Disc</option>
+            <option>Rear Wheel Bearing</option>
+            <option>Front Caliper LH</option>
+            <option>Front Caliper RH</option>
+            <option>Rear Caliper LH</option>
+            <option>Rear Caliper RH</option>
+            <option>Front ABS Sensor</option>
+            <option>Rear ABS Sensor</option>
+          </optgroup>
+          <optgroup label="🌡 Cooling">
+            <option>Coolant Flush</option>
+            <option>Radiator</option>
+            <option>Temperature Sensor</option>
+            <option>AC Condenser</option>
+          </optgroup>
+          <optgroup label="⚙️ Transmission">
+            <option>Clutch Kit</option>
+            <option>Flywheel</option>
+            <option>Slave Cylinder</option>
+            <option>Release Bearing</option>
+            <option>Transmission Service</option>
+            <option>Gearbox Filter</option>
+            <option>Gearbox Oil</option>
+          </optgroup>
+          <optgroup label="💨 Engine & Emissions">
+            <option>Turbo</option>
+            <option>DPF</option>
+            <option>Carbon Clean</option>
+            <option>EGR</option>
+            <option>Oxygen Sensor Bank 1</option>
+            <option>Oxygen Sensor Bank 2</option>
+            <option>Oil Cooler</option>
+          </optgroup>
+          <optgroup label="🔇 Exhaust">
+            <option>Front Pipe</option>
+            <option>Middle Pipe</option>
+            <option>Back Box</option>
+          </optgroup>
+          <optgroup label="❓ Other">
+            <option>Other (describe below)</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Preferred Date &nbsp;<span style="color:#2a2a00;font-size:0.6rem;font-weight:700;">■ Blocked</span> &nbsp;<span style="color:#2a2a2a;font-size:0.6rem;font-weight:700;">■ Closed</span></label>
+        <input type="hidden" id="f-date" />
+        <div class="cal-wrap">
+          <div class="cal-header">
+            <button class="cal-nav" onclick="changeMonth(-1)">&#8249;</button>
+            <span id="cal-month-label"></span>
+            <button class="cal-nav" onclick="changeMonth(1)">&#8250;</button>
+          </div>
+          <div class="cal-days-header">
+            <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+          <div class="cal-selected-display" id="cal-selected-display">Select a date above</div>
+        </div>
+      </div>
+
+      <div class="field"><label>Notes / Description</label><textarea id="f-notes" placeholder="Any extra details about the problem..."></textarea></div>
+      <button class="submit-btn" onclick="submitBooking()">⚙ Submit Booking via WhatsApp</button>
+      <div class="success-box" id="success-box">✅ WhatsApp opened — your booking details are ready to send!</div>
+    </div>
+  </div>
+
+  <div class="right-col">
+    <div class="card card-gold" style="max-height:480px; overflow-y:auto;">
+      <h3>Our Services</h3>
+      <div class="svc-group"><div class="svc-group-title">🔧 Diagnostics</div><div class="svc"><div class="svc-dot"></div>Diagnostics</div></div>
+      <div class="svc-group"><div class="svc-group-title">🛢 Service</div><div class="svc"><div class="svc-dot"></div>Air Filter</div><div class="svc"><div class="svc-dot"></div>Oil Filter</div><div class="svc"><div class="svc-dot"></div>Fuel Filter</div><div class="svc"><div class="svc-dot"></div>Cabin Filter</div><div class="svc"><div class="svc-dot"></div>Engine Oil</div></div>
+      <div class="svc-group"><div class="svc-group-title">🔩 Suspension</div><div class="svc"><div class="svc-dot"></div>Wishbone Upper / Lower</div><div class="svc"><div class="svc-dot"></div>Track Rod / Tie Rod</div><div class="svc"><div class="svc-dot"></div>Ball Joint</div><div class="svc"><div class="svc-dot"></div>Stabiliser Link</div><div class="svc"><div class="svc-dot"></div>Coil Spring</div><div class="svc"><div class="svc-dot"></div>Front Wheel Bearing</div><div class="svc"><div class="svc-dot"></div>Shock Absorber</div><div class="svc"><div class="svc-dot"></div>Strut Mount</div><div class="svc"><div class="svc-dot"></div>Drive Shaft / CV Joints</div></div>
+      <div class="svc-group"><div class="svc-group-title">🛑 Brakes</div><div class="svc"><div class="svc-dot"></div>Brake Fluid Service</div><div class="svc"><div class="svc-dot"></div>Front & Rear Pads / Discs</div><div class="svc"><div class="svc-dot"></div>Rear Wheel Bearing</div><div class="svc"><div class="svc-dot"></div>Calipers LH & RH (F/R)</div><div class="svc"><div class="svc-dot"></div>Front / Rear ABS Sensor</div></div>
+      <div class="svc-group"><div class="svc-group-title">🌡 Cooling</div><div class="svc"><div class="svc-dot"></div>Coolant Flush</div><div class="svc"><div class="svc-dot"></div>Radiator</div><div class="svc"><div class="svc-dot"></div>Temperature Sensor</div><div class="svc"><div class="svc-dot"></div>AC Condenser</div></div>
+      <div class="svc-group"><div class="svc-group-title">⚙️ Transmission</div><div class="svc"><div class="svc-dot"></div>Clutch Kit / Flywheel</div><div class="svc"><div class="svc-dot"></div>Slave Cylinder / Release Bearing</div><div class="svc"><div class="svc-dot"></div>Transmission Service</div><div class="svc"><div class="svc-dot"></div>Gearbox Filter / Oil</div></div>
+      <div class="svc-group"><div class="svc-group-title">💨 Engine & Emissions</div><div class="svc"><div class="svc-dot"></div>Turbo</div><div class="svc"><div class="svc-dot"></div>DPF</div><div class="svc"><div class="svc-dot"></div>Carbon Clean</div><div class="svc"><div class="svc-dot"></div>EGR</div><div class="svc"><div class="svc-dot"></div>Oxygen Sensors Bank 1 & 2</div><div class="svc"><div class="svc-dot"></div>Oil Cooler</div></div>
+      <div class="svc-group"><div class="svc-group-title">🔇 Exhaust</div><div class="svc"><div class="svc-dot"></div>Front Pipe</div><div class="svc"><div class="svc-dot"></div>Middle Pipe</div><div class="svc"><div class="svc-dot"></div>Back Box</div></div>
+    </div>
+
+    <!-- QR CODE pointing to the live site -->
+    <div class="card qr-card">
+      <h2 style="color:#fff;font-size:1rem;letter-spacing:2px;margin-bottom:6px;">SCAN TO BOOK</h2>
+      <p>Scan with any phone → opens booking page</p>
+      <div class="qr-wrap" id="qr-box"></div>
+      <div class="qr-note">✅ Works on any phone instantly</div>
+      <button class="qr-dl" onclick="dlQR()">↓ Download QR Code</button>
+    </div>
+
+    <!-- CLICKABLE CALL BUTTON -->
+    <a class="contact-bar" href="tel:+447855222963">
+      <div class="icon">📞</div>
+      <div>
+        <div class="lbl">Call Us Direct</div>
+        <div class="number">+44 7855 222963</div>
+      </div>
+    </a>
+  </div>
+</main>
+
+<!-- OWNER CONTROLS — password protected -->
+<div class="owner-section">
+  <button class="owner-toggle" onclick="toggleOwnerSection()">⚙ OWNER LOGIN</button>
+
+  <!-- Password Gate -->
+  <div class="pw-gate" id="pw-gate" style="display:none;">
+    <h3>🔐 Owner Access</h3>
+    <input type="password" id="pw-input" placeholder="Enter password" onkeydown="if(event.key==='Enter')checkPW()" />
+    <button class="pw-btn" onclick="checkPW()">Unlock</button>
+    <div class="pw-error" id="pw-error">❌ Incorrect password</div>
+  </div>
+
+  <!-- Actual Controls (hidden until password correct) -->
+  <div class="owner-card" id="owner-card">
+    <h2>🔧 Owner Control Panel</h2>
+    <p>Changes apply instantly to the calendar</p>
+    <div class="owner-grid">
+      <div class="control-box">
+        <h4 class="open-label">Booking Status & Days</h4>
+        <div class="toggle-row"><span>Accept Bookings</span><label class="toggle-switch"><input type="checkbox" id="toggle-bookings" checked onchange="toggleBookings()"><span class="slider"></span></label></div>
+        <div class="toggle-row"><span>Mon – Fri</span><label class="toggle-switch"><input type="checkbox" id="toggle-weekdays" checked onchange="saveDays()"><span class="slider"></span></label></div>
+        <div class="toggle-row"><span>Saturday</span><label class="toggle-switch"><input type="checkbox" id="toggle-sat" checked onchange="saveDays()"><span class="slider"></span></label></div>
+        <div class="toggle-row"><span>Sunday</span><label class="toggle-switch"><input type="checkbox" id="toggle-sun" onchange="saveDays()"><span class="slider"></span></label></div>
+      </div>
+      <div class="control-box">
+        <h4 class="block-label">🚫 Block Specific Dates</h4>
+        <p style="font-size:0.72rem;color:#555;margin-bottom:8px;">Blocked dates are unclickable in the calendar</p>
+        <div class="add-block-row">
+          <input type="date" id="block-input" />
+          <button class="add-block-btn" onclick="addBlock()">Block</button>
+        </div>
+        <div class="blocked-list" id="blocked-list">
+          <div style="font-size:0.75rem;color:#444;margin-top:8px;">No dates blocked yet</div>
+        </div>
+      </div>
+    </div>
+    <button class="lock-btn" onclick="lockPanel()">🔒 Lock Controls</button>
+  </div>
+</div>
+
+<footer>© Car Care Centre · Birmingham · All Rights Reserved</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  // ── QR Code pointing to the LIVE site ──
+  var SITE_URL = "https://tiktak5757.github.io/CAR-CARE-CENTRE-";
+  new QRCode(document.getElementById('qr-box'), {
+    text: SITE_URL,
+    width: 180, height: 180,
+    colorDark: '#000000', colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.M
+  });
+
+  function dlQR() {
+    setTimeout(function() {
+      var canvas = document.querySelector('#qr-box canvas');
+      if (!canvas) return;
+      var a = document.createElement('a');
+      a.download = 'CarCareCentre-QR.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    }, 300);
+  }
+
+  // ── Owner panel & password ──
+  var OWNER_PASSWORD = 'A1garage2024';
+  var ownerUnlocked = false;
+  var sectionVisible = false;
+
+  function toggleOwnerSection() {
+    sectionVisible = !sectionVisible;
+    if (!sectionVisible) {
+      document.getElementById('pw-gate').style.display = 'none';
+      document.getElementById('owner-card').style.display = 'none';
+      return;
+    }
+    if (ownerUnlocked) {
+      document.getElementById('owner-card').style.display = 'block';
+    } else {
+      document.getElementById('pw-gate').style.display = 'block';
+    }
+  }
+
+  function checkPW() {
+    var val = document.getElementById('pw-input').value;
+    if (val === OWNER_PASSWORD) {
+      ownerUnlocked = true;
+      document.getElementById('pw-gate').style.display = 'none';
+      document.getElementById('pw-error').style.display = 'none';
+      document.getElementById('owner-card').style.display = 'block';
+      document.getElementById('pw-input').value = '';
+    } else {
+      document.getElementById('pw-error').style.display = 'block';
+    }
+  }
+
+  function lockPanel() {
+    ownerUnlocked = false;
+    sectionVisible = false;
+    document.getElementById('owner-card').style.display = 'none';
+    document.getElementById('pw-gate').style.display = 'none';
+  }
+
+  // ── Calendar ──
+  var blockedDates=[], allowWeekdays=true, allowSat=true, allowSun=false;
+  var bookingsOpen=true, selectedDate='';
+  var today=new Date(), calYear=today.getFullYear(), calMonth=today.getMonth();
+  var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  function toStr(y,m,d){return y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');}
+  function isBlocked(ds){return blockedDates.indexOf(ds)!==-1;}
+  function isDayOff(dow){if(dow===0)return !allowSun;if(dow===6)return !allowSat;return !allowWeekdays;}
+  function isPast(y,m,d){var t=new Date();t.setHours(0,0,0,0);return new Date(y,m,d)<t;}
+
+  function renderCalendar(){
+    document.getElementById('cal-month-label').textContent=MONTHS[calMonth]+' '+calYear;
+    var grid=document.getElementById('cal-grid');grid.innerHTML='';
+    var firstDay=(new Date(calYear,calMonth,1).getDay()+6)%7;
+    var dim=new Date(calYear,calMonth+1,0).getDate();
+    for(var i=0;i<firstDay;i++){var e=document.createElement('div');e.className='cal-day cal-empty';grid.appendChild(e);}
+    for(var d=1;d<=dim;d++){
+      var ds=toStr(calYear,calMonth,d);
+      var dow=new Date(calYear,calMonth,d).getDay();
+      var cell=document.createElement('div');cell.className='cal-day';cell.textContent=d;
+      if(isPast(calYear,calMonth,d)){cell.classList.add('cal-past');}
+      else if(isBlocked(ds)){cell.classList.add('cal-blocked');cell.title='Not available';}
+      else if(isDayOff(dow)){cell.classList.add('cal-dayoff');cell.title='Closed';}
+      else{(function(s,el){el.addEventListener('click',function(){selectDate(s);});})(ds,cell);}
+      if(ds===toStr(today.getFullYear(),today.getMonth(),today.getDate()))cell.classList.add('cal-today');
+      if(ds===selectedDate)cell.classList.add('cal-selected');
+      grid.appendChild(cell);
+    }
+  }
+
+  function selectDate(ds){
+    selectedDate=ds;document.getElementById('f-date').value=ds;
+    var p=ds.split('-');
+    document.getElementById('cal-selected-display').innerHTML='📅 Selected: <span>'+p[2]+'/'+p[1]+'/'+p[0]+'</span>';
+    renderCalendar();
+  }
+
+  function changeMonth(dir){
+    calMonth+=dir;
+    if(calMonth<0){calMonth=11;calYear--;}
+    if(calMonth>11){calMonth=0;calYear++;}
+    renderCalendar();
+  }
+
+  function addBlock(){
+    var d=document.getElementById('block-input').value;
+    if(!d){alert('Please pick a date to block.');return;}
+    if(blockedDates.indexOf(d)!==-1){alert('Already blocked.');return;}
+    blockedDates.push(d);
+    if(selectedDate===d){selectedDate='';document.getElementById('f-date').value='';document.getElementById('cal-selected-display').innerHTML='Select a date above';}
+    renderBlocked();renderCalendar();
+    document.getElementById('block-input').value='';
+  }
+
+  function removeBlock(d){blockedDates=blockedDates.filter(function(x){return x!==d;});renderBlocked();renderCalendar();}
+
+  function renderBlocked(){
+    var el=document.getElementById('blocked-list');
+    if(!blockedDates.length){el.innerHTML='<div style="font-size:0.75rem;color:#444;margin-top:8px;">No dates blocked yet</div>';return;}
+    el.innerHTML='';
+    blockedDates.slice().sort().forEach(function(d){
+      var p=d.split('-');
+      var div=document.createElement('div');div.className='blocked-date-item';
+      div.innerHTML='🚫 '+p[2]+'/'+p[1]+'/'+p[0]+' <button class="remove-date" onclick="removeBlock(\''+d+'\')">✕ Remove</button>';
+      el.appendChild(div);
+    });
+  }
+
+  function saveDays(){
+    allowWeekdays=document.getElementById('toggle-weekdays').checked;
+    allowSat=document.getElementById('toggle-sat').checked;
+    allowSun=document.getElementById('toggle-sun').checked;
+    if(selectedDate){var dow=new Date(selectedDate+'T12:00:00').getDay();if(isDayOff(dow)){selectedDate='';document.getElementById('f-date').value='';document.getElementById('cal-selected-display').innerHTML='Select a date above';}}
+    renderCalendar();
+  }
+
+  function toggleBookings(){
+    bookingsOpen=document.getElementById('toggle-bookings').checked;
+    var banner=document.getElementById('status-banner');
+    var form=document.getElementById('booking-form');
+    var notice=document.getElementById('booking-closed-notice');
+    if(bookingsOpen){banner.textContent='✅ Bookings Open';banner.className='status-banner status-open';form.style.display='block';notice.style.display='none';}
+    else{banner.textContent='🚫 Bookings Currently Closed';banner.className='status-banner status-closed';form.style.display='none';notice.style.display='block';}
+  }
+
+  function submitBooking(){
+    var name=document.getElementById('f-name').value.trim();
+    var phone=document.getElementById('f-phone').value.trim();
+    var reg=document.getElementById('f-reg').value.trim();
+    var service=document.getElementById('f-service').value;
+    var date=document.getElementById('f-date').value;
+    var notes=document.getElementById('f-notes').value.trim();
+    if(!name||!phone||!service){alert('Please fill in name, phone and service.');return;}
+    if(!date){alert('Please select a date from the calendar.');return;}
+    var msg=encodeURIComponent('🔧 NEW BOOKING — Car Care Centre\n\nName: '+name+'\nPhone: '+phone+'\nVehicle Reg: '+(reg||'Not given')+'\nService: '+service+'\nDate: '+date.split('-').reverse().join('/')+'\nNotes: '+(notes||'None'));
+    window.open('https://wa.me/447855222963?text='+msg,'_blank');
+    document.getElementById('success-box').style.display='block';
+    ['f-name','f-phone','f-reg','f-notes'].forEach(function(id){document.getElementById(id).value='';});
+    document.getElementById('f-service').value='';
+    selectedDate='';document.getElementById('f-date').value='';
+    document.getElementById('cal-selected-display').innerHTML='Select a date above';
+    renderCalendar();
+  }
+
+  renderCalendar();
+</script>
+</body>
+</html>
